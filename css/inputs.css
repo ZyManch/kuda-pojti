@@ -1,0 +1,44 @@
+.select{
+	position: relative;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	border: 1px solid black;
+	background-color: white;
+	cursor: pointer;
+}
+.select .selected{
+	position:relative;
+	padding:5px;
+	background-color: white;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	background-image: url(../images/template/select.png);
+	background-position: right center;
+	background-repeat: no-repeat;
+}
+.select .option.checked{
+	color: #36671d;	
+}
+.select .option{
+	padding:5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+.select .option:hover{
+	background-color: #d7e78d;	
+}
+.select .options{
+	position: absolute;
+	top:100%;
+	left:2px;
+	right:2px;
+	display: none;
+	-webkit-border-radius: 0px 0px 5px 5px;
+	-moz-border-radius: 0px 0px 5px 5px;
+	border-radius: 0px 0px 5px 5px;
+	background-color: white;
+	border:1px solid black;
+}

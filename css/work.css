@@ -1,0 +1,36 @@
+.work{
+	padding: 5px;
+	margin: 5px;
+}
+.calendar{
+	width: 100%;
+	border: 1px solid #9d9d9d;
+	background-color: #d2d2d2;
+	position: relative;
+}
+.work a{
+	float: right;
+}
+.calendar div{
+	position:absolute;
+    background-color: #dddddd;
+}
+.calendar table{
+	border:0px;
+ 	border-collapse:collapse;
+ 	width: 100%;
+ 	height: 320px;
+ 	text-align: center;
+}
+.calendar table td{
+	padding:0px;
+	border: 1px dashed #9d9d9d;
+	border-bottom-width:0px;
+	border-right-width:0px;
+}
+.calendar table td:first-child{
+	border-left-width:0px;
+}
+.calendar table tr:first-child td{
+	border-top-width:0px;
+}

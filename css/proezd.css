@@ -1,0 +1,47 @@
+#map {
+	height: 400px;
+    border: 2px solid gray;
+    background-color: #a5a5a5;
+}
+#map_content{
+	margin-left: 306px;;
+	height: 400px;
+    border-left: 2px solid gray;
+}
+#map_items{
+	width:306px;
+	height: 400px;
+	overflow-y: scroll;
+	float: left;
+}
+#map_items .map_item{
+	padding: 3px;
+	margin: 2px;
+	font-size: 12px;
+	cursor: pointer;
+    background-color: #ffe765;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: 0px 0px 1px 0px #000000;
+    -moz-box-shadow: 0px 0px 1px 0px #000000;
+    box-shadow: 0px 0px 1px 0px #000000;
+    background: #dc9251; /* Old browsers */
+    background: -moz-linear-gradient(top,  #ecd766 0%, #f4ecc1 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ecd766), color-stop(100%,#f4ecc1)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #ecd766 0%,#f4ecc1 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #ecd766 0%,#f4ecc1 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #ecd766 0%,#f4ecc1 100%); /* IE10+ */
+    background: linear-gradient(top,  #ecd766 0%,#f4ecc1 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dbc136', endColorstr='#ecd766',GradientType=0 ); /* IE6-9 */
+}
+#map_items .map_item:hover{
+    background: #f4ecc1; /* Old browsers */
+    background: -moz-linear-gradient(top,  #f4ecc1 0%, #ecd766 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f4ecc1), color-stop(100%,#ecd766)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #f4ecc1 0%,#ecd766 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #f4ecc1 0%,#ecd766 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #f4ecc1 0%,#ecd766 100%); /* IE10+ */
+    background: linear-gradient(top,  #f4ecc1 0%,#ecd766 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dbc136', endColorstr='#ecd766',GradientType=0 ); /* IE6-9 */
+}

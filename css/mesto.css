@@ -1,0 +1,137 @@
+.avatar{
+	float: left;
+	margin:5px;
+	-webkit-box-shadow: 0px 0px 2px 0px #000000;
+	-moz-box-shadow: 0px 0px 2px 0px #000000;
+	box-shadow: 0px 0px 2px 0px #000000;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+.mesto {
+	margin: 4px;
+	padding: 5px;
+	min-height: 128px;
+	float: left;
+	width: 350px;
+	height: 200px;
+}
+.mesto img{
+	border: 1px solid #b4a240;
+	border-radius: 7px 7px 0px 0px;
+	width: 348px;
+	height:154px;
+}
+.mesto .about{
+	border-radius: 0px 0px 7px 7px;
+	border: 1px solid #b4a240;
+	border-top-width:0px;
+	height: 24px;
+	line-height: 24px;
+	background-color: #ede3ae;
+	padding: 0px 3px;
+}
+.mesto .about div.first{
+	width: 50%;
+	float:left;
+	height: 24px;
+	vertical-align: middle;
+	white-space:nowrap;
+}
+.mesto .about div.second{
+	margin-left: 50%;
+	border-left: 1px solid #b4a240;
+	padding-left: 3px;
+	height: 24px;
+}
+.mesto a, .mesto a:visited{
+	font-size:14px;
+	text-decoration: none;
+	color:black;
+	font-weight: 700;
+}
+.mesto .title{
+	overflow: hidden;
+	height:20px;
+}
+.metro{
+	width: 12px;
+	height: 12px;
+	display: inline-block;
+	margin: 3px;
+	vertical-align: middle;
+	position: relative;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    -webkit-box-shadow: 0px 0px 2px 0px #000000;
+    -moz-box-shadow: 0px 0px 2px 0px #000000;
+    box-shadow: 0px 0px 2px 0px #000000;
+}
+.metro.sokol{
+    background-color: #cd0506;
+}
+.metro.zamosk{
+    background-color: #0a6f20;
+}
+.metro.kahov{
+    background-color: #29b1a6;
+}
+.metro.arbat{
+    background-color: #072889;
+}
+.metro.filev{
+    background-color: #069cd3;
+}
+.metro.colco{
+    background-color: #7f0000;
+}
+.metro.kalyg{
+    background-color: #ff7f00;
+}
+.metro.tagan{
+    background-color: #92007b;
+}
+.metro.kalinin{
+    background-color: #ffdd03;
+}
+.metro.serpyh{
+    background-color: #a2a5b4;
+}
+.metro.lublin{
+    background-color: #8cce3a;
+}
+.metro.bytov{
+    background-color: #b2dae7;
+}
+.metro.mono{
+    background-color: #c1d9e5;
+}
+.metro.undefined{
+    background-color: #e2e2e2;
+}
+.metro div{
+	display: none;
+	position: absolute;
+	padding: 10px;
+	min-width: 300px;
+	left: 100%;
+	top: 16px;
+	
+}
+.metro:hover div{
+	display: block;
+    background-color: #ede3ae;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    -webkit-box-shadow: 0px 0px 5px 0px #000000;
+    -moz-box-shadow: 0px 0px 5px 0px #000000;
+    box-shadow: 0px 0px 5px 0px #000000;
+}
+#mesto_info {
+	margin-left: 370px;
+}
+#mesto_content { 
+	clear: left;
+}

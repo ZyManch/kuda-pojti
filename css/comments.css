@@ -1,0 +1,35 @@
+#add_comment{
+    padding: 10px;
+    text-align: right;
+}
+
+.form{
+    display: none;
+}
+.topic:first-child{
+    border-top-width: 0px;
+}
+.topic{
+    border-top: 1px dotted black;
+}
+.topic .user{
+    min-height: 150px;
+    width:150px;
+    float: left;
+    text-align: center;
+}
+.topic .user a, .topic .user a:visited{
+    line-height: 24px;
+}
+.topic .user img{
+    border: 0px;
+    width: 128px;
+    height: 128px;
+}
+.topic .content{
+    min-height: 150px;
+    width: 150px;
+
+    margin-left: 152px;
+    padding: 10px;
+}
