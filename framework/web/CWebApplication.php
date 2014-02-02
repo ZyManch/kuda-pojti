@@ -43,7 +43,7 @@
  *
  * @property CHttpSession $session the session component
  * @property CAssetManager $assetManager the asset manager component
- * @property CWebUser $user the user session information
+ * @property WebUser $user the user session information
  * @property CThemeManager $themeManager the theme manager
  * @property IAuthManager $authManager the authorization manager component
  * @property CClientScript $clientScript the client script manager

@@ -29,8 +29,7 @@ class SiteController extends Controller
 	 * This is the default 'index' action that is invoked
 	 * when an action is not explicitly requested by users.
 	 */
-	public function actionIndex()
-	{
+	public function actionIndex() {
 		$this->setPageTitle('Кудай пойти в Москве',false);
 		$dataProvider=new CActiveDataProvider('News');
 		$this->render('index',array(

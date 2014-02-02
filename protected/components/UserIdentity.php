@@ -10,6 +10,7 @@ class UserIdentity extends CUserIdentity {
     const COOKIE_TOKEN_NAME = 'token_hash';
     public $token;
     public $type;
+    public $email;
     public $_id;
 	/**
 	 * Authenticates a user.
@@ -28,6 +29,8 @@ class UserIdentity extends CUserIdentity {
             ));
             /** @var Users $user */
             if ($user && $user->comparePassword($this->password)) {
+                $this->username = $user->name;
+                $this->email = $user->email;
                 $this->type = $user->type;
                 $this->_id = $user->id;
                 $this->errorCode = self::ERROR_NONE;
@@ -37,6 +40,14 @@ class UserIdentity extends CUserIdentity {
         }
 		return !$this->errorCode;
 	}
+
+    public function getEmail() {
+        return $this->email;
+    }
+
+    public function getType() {
+        return $this->type;
+    }
 
     public function getId(){
         return $this->_id;
