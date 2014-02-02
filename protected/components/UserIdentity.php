@@ -25,9 +25,9 @@ class UserIdentity extends CUserIdentity {
         } else {
             $user = Users::model()->findByAttributes(array(
                 'email' => $this->username,
-                'pass'  => md5($this->password)
             ));
-            if ($user) {
+            /** @var Users $user */
+            if ($user && $user->comparePassword($this->password)) {
                 $this->type = $user->type;
                 $this->_id = $user->id;
                 $this->errorCode = self::ERROR_NONE;

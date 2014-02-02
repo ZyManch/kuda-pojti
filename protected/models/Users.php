@@ -84,4 +84,12 @@ class Users extends ActiveRecord {
 			'criteria'=>$criteria,
 		));
 	}
+
+    public function comparePassword($password) {
+        return $this->pass == $this->getHashOfPassword($password);
+    }
+
+    public function getHashOfPassword($password) {
+        return md5(Yii::app()->params['salt'].$password.$this->id);
+    }
 }

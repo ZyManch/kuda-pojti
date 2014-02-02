@@ -13,15 +13,7 @@ return array(
 	),
 
 
-
-
-
-
-
 	'components'=>array(
-
-
-
 		'user'=>array(
 			'allowAutoLogin'=>true,
 		),
@@ -68,6 +60,7 @@ return array(
         'city'       => 'Москва',
         'avatar'     => 'moskva',
         'forum'      => 2,
+        'salt' => 'fds78$',
         'debug'      => true
 	),
 );

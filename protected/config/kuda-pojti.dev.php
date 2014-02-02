@@ -76,6 +76,7 @@ return array(
 	    'city'       => 'Москва',
         'avatar'     => 'moskva',
         'forum'      => 2,
+        'salt' => 'fds78$',
         'debug'      => true
 	),
 );

@@ -49,7 +49,7 @@ class RegisterForm extends CFormModel {
     public function register() {
         $user = new Users();
         $user->email = $this->email;
-        $user->pass = md5($this->pass);
+        $user->pass = $user->getHashOfPassword($this->pass);
         $user->name = $this->name;
         $user->type = Users::TYPE_USER;
         if (!$user->save()) {
