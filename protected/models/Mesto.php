@@ -135,5 +135,22 @@ class Mesto extends ActiveRecord
 				'pageSize' => 30
 			)
 		));
-	} 
+	}
+
+    public function hasPage($page) {
+        return in_array($page, explode(',',$this->pages));
+    }
+
+    public function getPagesList() {
+        return array(
+            'main' => 'Главная',
+            'gallery' => 'Галлерея',
+            'discont' => 'Скидки',
+            'afisha' => 'Афиша',
+            'proezd' => 'Проезд',
+            'menu' => 'Меню',
+            'work' => 'Время работы',
+            'comments' => 'Комментарии'
+        );
+    }
 }

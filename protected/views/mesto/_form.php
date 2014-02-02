@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var $form CActiveForm
+ * @var $model Mesto
+ */
+?>
 <div class="form">
 
 <?php $form=$this->beginWidget('CActiveForm', array(
@@ -23,7 +29,10 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'content'); ?>
-		<?php echo $form->textArea($model,'content',array('rows'=>6, 'cols'=>50)); ?>
+        <?php $this->widget('ext.RedactorJS.Redactor',array(
+                'model'=>$model,
+                'attribute'=>'content',
+            ));?>
 		<?php echo $form->error($model,'content'); ?>
 	</div>
 
@@ -47,19 +56,25 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'pages'); ?>
-		<?php echo $form->textField($model,'pages',array('size'=>0,'maxlength'=>0)); ?>
+        <?php foreach ($model->getPagesList() as $page => $title):?>
+		    <?php echo CHtml::label($title,'page_'.$page);?>
+            <?php echo CHtml::checkBox('pages[]',$model->hasPage($page), array('value' => $page,'id' => 'page_'.$page)); ?>
+        <?php endforeach;?>
 		<?php echo $form->error($model,'pages'); ?>
 	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'enabled'); ?>
-		<?php echo $form->textField($model,'enabled'); ?>
+		<?php echo $form->checkBox($model,'enabled'); ?>
 		<?php echo $form->error($model,'enabled'); ?>
 	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'description'); ?>
-		<?php echo $form->textArea($model,'description',array('rows'=>6, 'cols'=>50)); ?>
+        <?php $this->widget('ext.RedactorJS.Redactor',array(
+                'model'=>$model,
+                'attribute'=>'description',
+            ));?>
 		<?php echo $form->error($model,'description'); ?>
 	</div>
 

@@ -1,5 +1,12 @@
 <?php print $model->content;?>
 <div class="mesta">
+    <?php if (Yii::app()->user->checkAccess('moderator')):?>
+    <?php echo CHtml::link(CHtml::image('/images/template/buttons/find.png'),array('admin'));?>
+    <?php echo CHtml::link(CHtml::image('/images/template/buttons/delete.png'),array('delete','id' => $model->url));?>
+    <?php echo CHtml::link(CHtml::image('/images/template/buttons/update.png'),array('update','id' => $model->url));?>
+    <?php echo CHtml::link(CHtml::image('/images/template/buttons/add.png'),array('mesto/create','category_id' => $model->id));?>
+    <br>
+    <?php endif;?>
 <?php $this->widget('zii.widgets.CListView', array(
 	'dataProvider'=>$dataProvider,
 	'itemView'=>'/mesto/_view',

@@ -48,6 +48,7 @@ class Filters extends ActiveRecord
 			array('type', 'length', 'max'=>8),
 			array('key', 'length', 'max'=>12),
 			array('king', 'length', 'max'=>7),
+			array('params, help', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, title, help, type, params, category_id, key, king, position', 'safe', 'on'=>'search'),

@@ -81,16 +81,18 @@ class FiltersController extends Controller
 	 */
 	public function actionUpdate($id)
 	{
+        /** @var Filters $model */
 		$model=$this->loadModel($id);
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['Filters']))
+        $attrName = get_class($model);
+		if(isset($_POST[$attrName]))
 		{
-			$model->attributes=$_POST['Filters'];
-			if($model->save())
+			$model->attributes=$_POST[$attrName];
+			if($model->save()) {
 				$this->redirect(array('view','id'=>$model->id));
+            }
 		}
 
 		$this->render('update',array(
