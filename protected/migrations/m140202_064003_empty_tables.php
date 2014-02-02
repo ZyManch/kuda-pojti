@@ -51,9 +51,9 @@ class m140202_064003_empty_tables extends CDbMigration {
             'map_x' => 'double DEFAULT NULL',
             'map_y' => 'double DEFAULT NULL',
             'changed' => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
-        ));
+        ),'ENGINE=MyISAM');
         $this->createIndex('company_id','maps','mesto_id');
-        $this->execute('CREATE FULLTEXT INDEX ON maps (adress)');
+        $this->execute('ALTER TABLE maps ADD FULLTEXT (adress)');
         $this->createTable('maps_metro', array(
             'id' => 'pk',
             'maps_id' => 'int(11) NOT NULL',

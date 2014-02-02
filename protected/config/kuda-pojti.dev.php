@@ -36,7 +36,7 @@ return array(
 		),
 		'db'=>array(
             'class'                 => 'CDbConnection',
-            'connectionString'      => 'mysql:host=localhost;dbname=kudapojti_moscow',
+            'connectionString'      => 'mysql:host=localhost;dbname=kudapojti_chelny',
             'username'              => 'root',
             'password'              => '',
             'emulatePrepare'        => true,
