@@ -62,6 +62,10 @@ input[type=text], input[type=password], textarea{
     -moz-border-radius: 5px;
     border-radius: 5px;
 }
+textarea {
+    margin: 0;
+    width: 100%;
+}
 .gradient1{
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;

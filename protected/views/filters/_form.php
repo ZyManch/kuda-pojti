@@ -1,9 +1,23 @@
+<?php
+/**
+ * @var $model Filters
+ * @var $form CActiveForm
+ */
+?>
 <div class="form">
+
+
+    <?php echo CHtml::link(CHtml::image('/images/template/buttons/find.png'),array('admin'));?>
+    <?php if (!$model->getIsNewRecord()):?>
+        <?php echo CHtml::link(CHtml::image('/images/template/buttons/delete.png'),array('delete','id' => $model->id));?>
+        <?php echo CHtml::link(CHtml::image('/images/template/buttons/view.png'),array('view','id' => $model->id));?>
+    <?php endif;?>
 
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'filters-form',
 	'enableAjaxValidation'=>false,
 )); ?>
+
 
 	<p class="note">Fields with <span class="required">*</span> are required.</p>
 
@@ -23,25 +37,25 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'type'); ?>
-		<?php echo $form->textField($model,'type',array('size'=>8,'maxlength'=>8)); ?>
+		<?php echo $form->dropDownList($model,'type',$model->getTypeVariants()); ?>
 		<?php echo $form->error($model,'type'); ?>
 	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'params'); ?>
-		<?php echo $form->textArea($model,'params',array('rows'=>6, 'cols'=>50)); ?>
+		<?php echo $form->textArea($model,'params',array('rows'=>12, 'cols'=>50)); ?>
 		<?php echo $form->error($model,'params'); ?>
 	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'category_id'); ?>
-		<?php echo $form->textField($model,'category_id'); ?>
+		<?php echo $form->dropDownList($model,'category_id',CHtml::listData(Categories::model()->findAll(),'id','title'),array('empty' => 'Общий')); ?>
 		<?php echo $form->error($model,'category_id'); ?>
 	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'king'); ?>
-		<?php echo $form->textField($model,'king',array('size'=>7,'maxlength'=>7)); ?>
+		<?php echo $form->dropDownList($model,'king',$model->getKingVariants()); ?>
 		<?php echo $form->error($model,'king'); ?>
 	</div>
 

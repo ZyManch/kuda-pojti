@@ -12,6 +12,7 @@
  * @property string $avatar
  * @property integer $position
  * @property integer $changed
+ * @property Filters $typeFilter
  */
 class Categories extends ActiveRecord
 {
@@ -31,7 +32,7 @@ class Categories extends ActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('title, content, description, url, avatar, position, changed', 'required'),
+			array('title, content, url, avatar', 'required'),
 			array('position, changed', 'numerical', 'integerOnly'=>true),
 			array('title, url', 'length', 'max'=>64),
 			array('avatar', 'length', 'max'=>16),
@@ -82,6 +83,17 @@ class Categories extends ActiveRecord
 			'changed' => 'Changed',
 		);
 	}
+
+    public function getAvatarList() {
+        $images = scandir('images/categories');
+        $result = array();
+        foreach (array_splice($images,2) as $image) {
+            if (substr($image, -4) == '.png') {
+                $result[$image] = $image;
+            }
+        }
+        return $result;
+    }
 
 	/**
 	 * Retrieves a list of models based on the current search/filter conditions.

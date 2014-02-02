@@ -18,7 +18,7 @@ class CategoriesController extends Controller
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
 				'actions'=>array('create','update', 'admin','delete'),
-				'roles'=>array('admin'),
+				'roles'=>array('moderator'),
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),
@@ -59,8 +59,18 @@ class CategoriesController extends Controller
 		if(isset($_POST['Categories']))
 		{
 			$model->attributes=$_POST['Categories'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+			if($model->save()) {
+                $filter = new Filters();
+                $filter->category_id = $model->id;
+                $filter->type = 'Multy';
+                $filter->key = 'type';
+                $filter->king = 'type';
+                $filter->title = 'Тип заведения';
+                if ($filter->save()) {
+                    throw new Exception('Cant save main filter, error in '.implode(',',$filter->getErrors()));
+                }
+				$this->redirect(array('view','id'=>$model->url));
+            }
 		}
 
 		$this->render('create',array(
@@ -85,7 +95,7 @@ class CategoriesController extends Controller
 		{
 			$model->attributes=$_POST['Categories'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+				$this->redirect(array('view','id'=>$model->url));
 		}
 
 		$this->render('update',array(

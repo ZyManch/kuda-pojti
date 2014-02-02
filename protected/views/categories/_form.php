@@ -1,4 +1,15 @@
+<?php
+/**
+ * @var $form CActiveForm
+ * @var $model Categories
+ */
+?>
 <div class="form">
+    <?php echo CHtml::link(CHtml::image('/images/template/buttons/find.png'),array('admin'));?>
+    <?php if (!$model->getIsNewRecord()):?>
+    <?php echo CHtml::link(CHtml::image('/images/template/buttons/delete.png'),array('delete','id' => $model->url));?>
+    <?php echo CHtml::link(CHtml::image('/images/template/buttons/view.png'),array('view','id' => $model->url));?>
+    <?php endif;?>
 
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'categories-form',
@@ -17,13 +28,16 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'content'); ?>
-		<?php echo $form->textArea($model,'content',array('rows'=>6, 'cols'=>50)); ?>
+		<?php echo $form->textArea($model,'content',array('rows'=>6)); ?>
 		<?php echo $form->error($model,'content'); ?>
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'description'); ?>
-		<?php echo $form->textArea($model,'description',array('rows'=>6, 'cols'=>50)); ?>
+        <?php echo $form->labelEx($model,'description'); ?>
+        <?php $this->widget('ext.RedactorJS.Redactor',array(
+            'model'=>$model,
+            'attribute'=>'description',
+        ));?>
 		<?php echo $form->error($model,'description'); ?>
 	</div>
 
@@ -33,22 +47,33 @@
 		<?php echo $form->error($model,'url'); ?>
 	</div>
 
+    <div class="row">
+        <?php if ($model->typeFilter):?>
+            <?php foreach ($model->getTypeFilter() as $key => $value):?>
+                <?=$key;?>,<?=$value;?>|
+            <?php endforeach;?>
+            <?php echo CHtml::button('Редактировать',array('onclick' => "location.href='/filters/update/".$model->typeFilter->id."';"));?>
+        <?php endif;?>
+    </div>
+
 	<div class="row">
 		<?php echo $form->labelEx($model,'avatar'); ?>
-		<?php echo $form->textField($model,'avatar',array('size'=>16,'maxlength'=>16)); ?>
+		<?php echo $form->dropDownList(
+            $model,
+            'avatar',
+            $model->getAvatarList(),
+            array('onchange' => 'js:$("#avatar").attr("src","/images/categories/"+this.value);')
+        ); ?>
 		<?php echo $form->error($model,'avatar'); ?>
+        <br>
+        <?php Yii::app()->clientScript->registerScript('load-avcatar','$("#Categories_avatar").trigger("change");');?>
+        <?php echo CHtml::image('','', array('id' => 'avatar'));?>
 	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'position'); ?>
 		<?php echo $form->textField($model,'position'); ?>
 		<?php echo $form->error($model,'position'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'changed'); ?>
-		<?php echo $form->textField($model,'changed'); ?>
-		<?php echo $form->error($model,'changed'); ?>
 	</div>
 
 	<div class="row buttons">

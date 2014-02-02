@@ -42,7 +42,7 @@ class Filters extends ActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('title, help, params, position, key, king', 'required'),
+			array('title, key, king', 'required'),
 			array('category_id, position', 'numerical', 'integerOnly'=>true),
 			array('title', 'length', 'max'=>128),
 			array('type', 'length', 'max'=>8),
@@ -181,4 +181,25 @@ class Filters extends ActiveRecord
 	    }
 		return implode(', ', $result);
 	}
+
+    public function getTypeVariants() {
+        return array(
+            'Radio' => 'Переключатель "один из" (radio)',
+            'Multy' => 'Список вариантов (milty)',
+            'RangeIn' => 'Внутренний интервал (range in)',
+            'RangeOut' => 'Внешний интервал (range out)',
+            'Metro' => 'Метро (metro)',
+            'Work' => 'Работа (work)',
+            'Bool' => 'Наличие (bool)'
+        );
+    }
+
+    public function getKingVariants() {
+        return array(
+            'general' => 'Главный',
+            'type' => 'Тип заведения',
+            'medium' => 'Обычный',
+            'lower' => 'Незначительный'
+        );
+    }
 }
