@@ -41,66 +41,6 @@ class AuthManager implements IAuthManager {
     }
 
     /**
-     * @param $userId
-     * @param $permissionId
-     * @return array
-     */
-    public function getPermissionInfo($userId, $needPermissionId = null) {
-        if (!isset($this->permissions[$userId])) {
-            $this->permissions[$userId] = array();
-
-            $userLinkTable = CUserHasPermissionGroup::model()->tableName();
-            $groupTable = CPermissionGroup::model()->tableName();
-            $permissionLinkTable = CLinkPermissionGroup::model()->tableName();
-            $permissions = Yii::app()->db->createCommand()->
-                select(array('pl.level','pl.permission_id','pl.privileges'))->
-                from($userLinkTable.' ul')->
-                join($groupTable.' g','ul.permission_group_id = g.permission_group_id')->
-                join($permissionLinkTable.' pl', 'pl.permission_group_id=g.permission_group_id')->
-                where('ul.user_id=:user', array(':user' =>$userId))->
-                queryAll();
-            foreach ($permissions as $permission) {
-                $permissionId = (int)$permission['permission_id'];
-                $privileges = array_filter(explode(',', $permission['privileges']));
-                $level = $permission['level'];
-                if (isset($this->permissions[$userId][$permissionId])) {
-                    $this->permissions[$userId][$permissionId]['privileges'] = array_filter(
-                        array_merge(
-                            $this->permissions[$userId][$permissionId]['privileges'],
-                            $privileges
-                        )
-                    );
-                    if ($this->getIndexLevel($level) > $this->getIndexLevel($this->permissions[$userId][$permissionId]['level'])) {
-                        $this->permissions[$userId][$permissionId]['level'] = $level;
-                    }
-                } else {
-                    $this->permissions[$userId][$permissionId] = array(
-                        'level'      => $level,
-                        'privileges' => $privileges
-                    );
-                }
-            }
-        }
-        if (is_null($needPermissionId)) {
-            return $this->permissions[$userId];
-        }
-        if (!isset($this->permissions[$userId][$needPermissionId])) {
-            return array(
-                'level' => '',
-                'privileges' => array()
-            );
-        }
-        return $this->permissions[$userId][$needPermissionId];
-    }
-
-    protected function getIndexLevel($level) {
-        if (isset($this->indexOfLevel[$level])){
-            return $this->indexOfLevel[$level];
-        }
-        return 0;
-    }
-
-    /**
      * Creates an authorization item.
      * An authorization item represents an action permission (e.g. creating a post).
      * It has three types: operation, task and role.
