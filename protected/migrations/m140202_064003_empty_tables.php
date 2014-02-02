@@ -112,31 +112,6 @@ class m140202_064003_empty_tables extends CDbMigration {
             'time_begin' => 'mediumint(9) NOT NULL',
             'time_end' => 'mediumint(9) NOT NULL',
         ));
-        $this->createTable('yandex_maps', array(
-            'id' => 'pk',
-            'map_id' => 'int(11) NOT NULL',
-            'my_map_id' => 'int(11) DEFAULT NULL',
-            'email' => 'text COLLATE utf8_bin NOT NULL',
-            'company_id' => 'int(11) NOT NULL',
-            'my_company_id' => 'int(11) DEFAULT NULL',
-            'name' => 'varchar(350) COLLATE utf8_bin NOT NULL',
-            'info' => 'text COLLATE utf8_bin',
-            'city' => 'text COLLATE utf8_bin',
-            'structure' => 'enum("Улица","Переулок","Бульвар","Площадь","Проспект","Проезд","Тупик","Шоссе","Набережная","Вал","Парк") COLLATE utf8_bin DEFAULT NULL',
-            'adress' => 'text COLLATE utf8_bin',
-            'address' => 'text COLLATE utf8_bin NOT NULL',
-            'street' => 'text COLLATE utf8_bin',
-            'building' => 'text COLLATE utf8_bin',
-            'office' => 'text COLLATE utf8_bin',
-            'url' => 'text COLLATE utf8_bin NOT NULL',
-            'categories' => 'text COLLATE utf8_bin NOT NULL',
-            'phones' => 'text COLLATE utf8_bin NOT NULL',
-            'work' => 'text COLLATE utf8_bin NOT NULL',
-            'filters' => 'text COLLATE utf8_bin NOT NULL',
-        ));
-        $this->createIndex('map_id','yandex_maps','map_id', true);
-        $this->execute('CREATE FULLTEXT INDEX ON yandex_maps (address)');
-        $this->execute('CREATE FULLTEXT INDEX ON yandex_maps (name)');
     }
 
 	public function down() {
@@ -151,7 +126,5 @@ class m140202_064003_empty_tables extends CDbMigration {
         $this->dropTable('metro');
         $this->dropTable('news');
         $this->dropTable('work');
-        $this->dropTable('yandex_maps');
-
     }
 }
