@@ -1,5 +1,5 @@
 <?php print CHtml::image(
-	'images/mesto/'.$model->avatar, 
+	'images/mesto/'.Yii::app()->params['avatar'].'/'.$model->avatar,
 	$model->title,
 	array(
 		'class' => 'avatar'

@@ -7,7 +7,7 @@
 	</div>
 	<?php echo CHtml::link(
 			CHtml::image(
-				'images/mesto/'.$data->avatar,
+				'images/mesto/'.Yii::app()->params['avatar'].'/'.$data->avatar,
 				CHtml::encode($data->title)
 			),
 			array(
