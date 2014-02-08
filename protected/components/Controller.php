@@ -112,14 +112,25 @@ class Controller extends CController
 	public function initAdminMenu($model = null) {
 		if(Yii::app()->user->checkAccess('root')) {
 			$this->adminMenu = array();
-			$this->adminMenu[] = array('label'=>'Список', 'url'=>array('index'));
-			$this->adminMenu[] = array('label'=>'Добавить', 'url'=>array('create'));
+            $action = $this->getAction()->getId();
+            if ($action != 'index') {
+			    $this->adminMenu['index'] = array('label'=>'Список', 'url'=>array('index'),'image' => 'list');
+            }
+			$this->adminMenu['create'] = array('label'=>'Добавить', 'url'=>array('create'),'image' => 'add');
 			if (!is_null($model)) {
-				$this->adminMenu[] = array('label'=>'Просмотр', 'url'=>array('view', 'id'=>$model->url));
-				$this->adminMenu[] = array('label'=>'Редактировать', 'url'=>array('update', 'id'=>$model->url));
-				$this->adminMenu[] = array('label'=>'Удалить', 'url'=>array('delete','id'=>$model->url));
+                if ($action != 'view') {
+				    $this->adminMenu['view'] = array('label'=>'Просмотр', 'url'=>array('view', 'id'=>$model->url),'image' => 'view');
+                }
+                if ($action != 'update') {
+				    $this->adminMenu['update'] = array('label'=>'Редактировать', 'url'=>array('update', 'id'=>$model->url),'image' => 'update');
+                }
+                if ($action != 'delete') {
+				    $this->adminMenu['delete'] = array('label'=>'Удалить', 'url'=>array('delete','id'=>$model->url),'image' => 'delete');
+                }
 			}
-			$this->adminMenu[] = array('label'=>'Администрирование', 'url'=>array('admin'));
+            if ($action != 'admin') {
+			    $this->adminMenu['admin'] = array('label'=>'Администрирование', 'url'=>array('admin'),'image' => 'list');
+            }
 		}
 	}
 	

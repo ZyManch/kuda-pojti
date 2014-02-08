@@ -1,5 +1,4 @@
 <br>
-<?php echo CHtml::link(CHtml::image('/images/template/buttons/add.png'), array('create'),array('class' => ''));?>
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'categories-grid',
 	'dataProvider'=>$model->search(),

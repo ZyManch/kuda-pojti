@@ -408,6 +408,41 @@ table{
 	height:30px;
 	width:88px;
 }
+#admin-menu {
+    margin-left:10px;
+    margin-right:10px;
+    margin-bottom: 10px;
+    height: 56px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    -webkit-box-shadow: 0px 0px 10px 0px #000000;
+    -moz-box-shadow: 0px 0px 10px 0px #000000;
+    box-shadow: 0px 0px 10px 0px #000000;
+    background-color: #ede3ae;
+}
+#admin-menu img {
+    float: left;
+}
+#admin-menu a,#admin-menu a:visited {
+    padding: 4px;
+    border-right: 1px solid black;
+    line-height: 48px;
+    display: block;
+    float: left;
+    text-decoration: none;
+    font-size: 14px;
+    color: black;
+    vertical-align: middle;
+    font-weight: 700;
+}
+#admin-menu a:hover {
+    background-color: #d5d27d;
+}
+#admin-menu a:first-child {
+    border-radius:10px 0 0 10px;
+}
+
 #container{
 	padding: 10px;
 	margin-left:10px;

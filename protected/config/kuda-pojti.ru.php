@@ -29,7 +29,7 @@ return array_merge_recursive(
 
         'params'=>array(
             'city'       => 'Москва',
-            'avatar'     => 'moskva',
+            'avatar'     => 'moskow',
             'forum'      => 2,
             'debug'      => true
         ),

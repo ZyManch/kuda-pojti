@@ -26,6 +26,13 @@ class CategoriesController extends Controller
 		);
 	}
 
+    public function initAdminMenu($model = null) {
+        parent::initAdminMenu($model);
+        if (isset($this->adminMenu['create'])) {
+            $this->adminMenu['create']['url'] = array('mesto/create','category_id' => $model->id);
+        }
+    }
+
 	/**
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
@@ -87,7 +94,7 @@ class CategoriesController extends Controller
 	{
 		$model=$this->loadModel($id);
 		$this->setPageTitle('Редактирование '.$model->title,false);
-		$this->initAdminMenu();
+		$this->initAdminMenu($model);
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
@@ -133,6 +140,7 @@ class CategoriesController extends Controller
 	{
 		$model=new Categories('search');
 		$this->setPageTitle('Категории');
+        $this->initAdminMenu();
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['Categories']))
 			$model->attributes=$_GET['Categories'];

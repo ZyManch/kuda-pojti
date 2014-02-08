@@ -30,8 +30,8 @@ class UserIdentity extends CUserIdentity {
             /** @var Users $user */
             if ($user && $user->comparePassword($this->password)) {
                 $this->username = $user->name;
-                $this->email = $user->email;
-                $this->type = $user->type;
+                $this->setState('email', $user->email);
+                $this->setState('type', $user->type);
                 $this->_id = $user->id;
                 $this->errorCode = self::ERROR_NONE;
             } else {
@@ -42,11 +42,11 @@ class UserIdentity extends CUserIdentity {
 	}
 
     public function getEmail() {
-        return $this->email;
+        return $this->getState('email');
     }
 
     public function getType() {
-        return $this->type;
+        return $this->getState('type');
     }
 
     public function getId(){

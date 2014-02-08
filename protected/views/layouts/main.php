@@ -7,6 +7,7 @@
 	<link rel="stylesheet" type="text/css" href="css/main.css" />
 	<link rel="stylesheet" type="text/css" href="css/inputs.css" />
 	<link rel="stylesheet" type="text/css" href="css/form.css" />
+    <link rel="stylesheet" type="text/css" href="css/city/<?php echo Yii::app()->params['avatar'];?>.css" />
 	<title><?php print CHtml::encode($this->pageTitle); ?></title>
 	<script type="text/javascript" src="js/scripts.js"></script>
     <script type="text/javascript">
@@ -37,14 +38,15 @@
 			<input type="text"/>
 		</div>
 	</div>
-	<div id="main" style="background-image: url(images/avatars/<?php print Yii::app()->params['avatar'];?>.jpg);">
+	<div id="main" style="background-image: url(/images/avatars/<?php print Yii::app()->params['avatar'];?>.jpg);">
 		<div class="city_label"></div>
 		<div class="city_box">
 			<?php $this->renderPartial('//widgets/select', array(
 				'items' => array(
-					'moscow' => 'Москва'
+					//'moscow' => 'Москва',
+					'chelny' => 'Набережные Челны',
 				),
-				'selected' => 'moscow'
+				'selected' => Yii::app()->params['avatar']
 			));?>
 		</div>
 	</div>
@@ -86,7 +88,16 @@
 	<div id="spacer1"></div>
 	
 	<?php if($this->adminMenu):?>
-	asd
+        <div id="admin-menu">
+            <?php foreach ($this->adminMenu as $menuItem):?>
+                <a href="<?php echo CHtml::normalizeUrl($menuItem['url']);?>">
+                    <?php if ($menuItem['image']):?>
+                        <img src="/images/template/buttons/<?php echo $menuItem['image'];?>.png">
+                    <?php endif;?>
+                    <?php echo $menuItem['label'];?>
+                </a>
+            <?php endforeach;?>
+        </div>
 	<?php endif;?>
 	
 	<?php echo $content; ?>
