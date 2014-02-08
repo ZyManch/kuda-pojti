@@ -23,9 +23,11 @@ class MestoController extends Controller
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
-	public function actionCreate()
-	{
+	public function actionCreate($category_id = null)	{
 		$model=new Mesto;
+        if ($category_id) {
+            $model->categories = array($category_id => true);
+        }
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);

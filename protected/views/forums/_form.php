@@ -11,13 +11,13 @@
     <?php echo $form->errorSummary($topic); ?>
 
 	<div class="row">
-		<?php echo $form->labelEx($forum,'title'); ?>
+		<?php echo $form->labelEx($forum,'title', array('class' => 'label')); ?>
 		<?php echo $form->textField($forum,'title',array('size'=>100,'maxlength'=>128)); ?>
 		<?php echo $form->error($forum,'title'); ?>
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($topic,'content'); ?>
+		<?php echo $form->labelEx($topic,'content', array('class' => 'label')); ?>
 		<?php echo $form->textArea($topic, 'content', array('rows'=>15, 'cols'=>133)); ?>
 		<?php echo $form->error($topic,'content'); ?>
 	</div>

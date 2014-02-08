@@ -15,6 +15,7 @@
  * @property integer $enabled
  * @property string $description
  * @property integer $changed
+ * @property Categories[] $categories
  */
 class Mesto extends ActiveRecord
 {
@@ -51,7 +52,8 @@ class Mesto extends ActiveRecord
 		return array(
 			'maps' => array(self::HAS_MANY, 'Maps', 'mesto_id'),
 		    'images'=> array(self::HAS_MANY, 'Images', 'mesto_id'),
-            'commentForum' => array(self::BELONGS_TO, 'Forums', 'forum_id')
+            'commentForum' => array(self::BELONGS_TO, 'Forums', 'forum_id'),
+            'categories' => array(self::MANY_MANY, 'Categories', 'mesto_cats(mesto_id,category_id)','index' => 'id'),
 		);
 	}
 

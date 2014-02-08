@@ -24,43 +24,43 @@
 	<?php echo $form->errorSummary($model); ?>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'title'); ?>
+		<?php echo $form->labelEx($model,'title', array('class' => 'label')); ?>
 		<?php echo $form->textField($model,'title',array('size'=>60,'maxlength'=>128)); ?>
 		<?php echo $form->error($model,'title'); ?>
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'help'); ?>
+		<?php echo $form->labelEx($model,'help', array('class' => 'label')); ?>
 		<?php echo $form->textArea($model,'help',array('rows'=>6, 'cols'=>50)); ?>
 		<?php echo $form->error($model,'help'); ?>
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'type'); ?>
+		<?php echo $form->labelEx($model,'type', array('class' => 'label')); ?>
 		<?php echo $form->dropDownList($model,'type',$model->getTypeVariants()); ?>
 		<?php echo $form->error($model,'type'); ?>
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'params'); ?>
+		<?php echo $form->labelEx($model,'params', array('class' => 'label')); ?>
 		<?php echo $form->textArea($model,'params',array('rows'=>12, 'cols'=>50)); ?>
 		<?php echo $form->error($model,'params'); ?>
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'category_id'); ?>
+		<?php echo $form->labelEx($model,'category_id', array('class' => 'label')); ?>
 		<?php echo $form->dropDownList($model,'category_id',CHtml::listData(Categories::model()->findAll(),'id','title'),array('empty' => 'Общий')); ?>
 		<?php echo $form->error($model,'category_id'); ?>
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'king'); ?>
+		<?php echo $form->labelEx($model,'king', array('class' => 'label')); ?>
 		<?php echo $form->dropDownList($model,'king',$model->getKingVariants()); ?>
 		<?php echo $form->error($model,'king'); ?>
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'position'); ?>
+		<?php echo $form->labelEx($model,'position', array('class' => 'label')); ?>
 		<?php echo $form->textField($model,'position'); ?>
 		<?php echo $form->error($model,'position'); ?>
 	</div>

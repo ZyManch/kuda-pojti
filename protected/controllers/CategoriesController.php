@@ -28,8 +28,8 @@ class CategoriesController extends Controller
 
     public function initAdminMenu($model = null) {
         parent::initAdminMenu($model);
-        if (isset($this->adminMenu['create'])) {
-            $this->adminMenu['create']['url'] = array('mesto/create','category_id' => $model->id);
+        if ($model) {
+            $this->adminMenu['mesto'] = array('label' => 'Добавить место', 'url' => array('mesto/create','category_id' => $model->id),'image' => 'add');
         }
     }
 
@@ -73,8 +73,12 @@ class CategoriesController extends Controller
                 $filter->key = 'type';
                 $filter->king = 'type';
                 $filter->title = 'Тип заведения';
-                if ($filter->save()) {
-                    throw new Exception('Cant save main filter, error in '.implode(',',$filter->getErrors()));
+                if (!$filter->save()) {
+                    $message = array();
+                    foreach ($filter->getErrors() as $key => $errors)  {
+                        $message[] = $key.':'.implode('; ', $errors);
+                    }
+                    throw new Exception('Cant save main filter, error in '.implode('.', $message));
                 }
 				$this->redirect(array('view','id'=>$model->url));
             }

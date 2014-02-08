@@ -16,19 +16,19 @@
 	<?php echo $form->errorSummary($model); ?>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'title'); ?>
+		<?php echo $form->labelEx($model,'title', array('class' => 'label')); ?>
 		<?php echo $form->textField($model,'title',array('size'=>60,'maxlength'=>64)); ?>
 		<?php echo $form->error($model,'title'); ?>
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'content'); ?>
+		<?php echo $form->labelEx($model,'content', array('class' => 'label')); ?>
 		<?php echo $form->textArea($model,'content',array('rows'=>6)); ?>
 		<?php echo $form->error($model,'content'); ?>
 	</div>
 
 	<div class="row">
-        <?php echo $form->labelEx($model,'description'); ?>
+        <?php echo $form->labelEx($model,'description', array('class' => 'label')); ?>
         <?php $this->widget('ext.RedactorJS.Redactor',array(
             'model'=>$model,
             'attribute'=>'description',
@@ -37,7 +37,7 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'url'); ?>
+		<?php echo $form->labelEx($model,'url', array('class' => 'label')); ?>
 		<?php echo $form->textField($model,'url',array('size'=>60,'maxlength'=>64)); ?>
 		<?php echo $form->error($model,'url'); ?>
 	</div>
@@ -52,7 +52,7 @@
     </div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'avatar'); ?>
+		<?php echo $form->labelEx($model,'avatar', array('class' => 'label')); ?>
 		<?php echo $form->dropDownList(
             $model,
             'avatar',
@@ -66,7 +66,7 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'position'); ?>
+		<?php echo $form->labelEx($model,'position', array('class' => 'label')); ?>
 		<?php echo $form->textField($model,'position'); ?>
 		<?php echo $form->error($model,'position'); ?>
 	</div>

@@ -32,7 +32,7 @@ $widget = $this->createWidget(
         <?php echo $form->errorSummary($topic); ?>
 
         <div class="row">
-            <?php echo $form->labelEx($topic,'content'); ?>
+            <?php echo $form->labelEx($topic,'content', array('class' => 'label')); ?>
             <?php echo $form->textArea($topic, 'content', array('rows'=>15, 'cols'=>133)); ?>
             <?php echo $form->error($topic,'content'); ?>
         </div>

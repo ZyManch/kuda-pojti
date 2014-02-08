@@ -60,7 +60,11 @@ div.form label
 {
 	font-weight: bold;
 	font-size: 0.9em;
-	display: block;
+}
+div.form label.label {
+    display: inline-block;
+    width: 160px;
+    text-align: right;
 }
 
 div.form .row
