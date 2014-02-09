@@ -9,17 +9,12 @@
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'mesto-form',
 	'enableAjaxValidation'=>false,
+    'htmlOptions' => array('enctype'=>'multipart/form-data')
 )); ?>
 
 	<p class="note">Fields with <span class="required">*</span> are required.</p>
 
 	<?php echo $form->errorSummary($model); ?>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'art', array('class' => 'label')); ?>
-		<?php echo $form->textField($model,'art',array('size'=>60,'maxlength'=>64)); ?>
-		<?php echo $form->error($model,'art'); ?>
-	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'title', array('class' => 'label')); ?>
@@ -29,7 +24,7 @@
 
     <div class="row">
         <?php echo $form->labelEx($model,'categories', array('class' => 'label')); ?>
-        <?php echo $form->checkBoxList($model,'categories',CHtml::listData(Categories::model()->findAll(),'id','title'),array('size'=>60,'maxlength'=>64, 'separator' => '|')); ?>
+        <?php echo $form->checkBoxList($model,'categories',CHtml::listData(Categories::model()->findAll(),'id','title'),array('size'=>60,'maxlength'=>64, 'separator' => ' ')); ?>
         <?php echo $form->error($model,'categories'); ?>
     </div>
 
@@ -49,8 +44,12 @@
 	</div>
 
 	<div class="row">
+        <?php if($model->avatar):?>
+            <img src="/images/mesto/<?php echo Yii::app()->params['avatar'];?>/<?php echo $model->avatar;?>" style="margin-left: 165px;">
+            <br><br>
+        <?php endif;?>
 		<?php echo $form->labelEx($model,'avatar', array('class' => 'label')); ?>
-		<?php echo $form->textField($model,'avatar',array('size'=>60,'maxlength'=>128)); ?>
+		<?php echo $form->fileField($model,'avatar',array('size'=>60,'maxlength'=>128)); ?>
 		<?php echo $form->error($model,'avatar'); ?>
 	</div>
 
@@ -63,8 +62,8 @@
 	<div class="row">
 		<?php echo $form->labelEx($model,'pages', array('class' => 'label')); ?>
         <?php foreach ($model->getPagesList() as $page => $title):?>
-		    <?php echo CHtml::label($title,'page_'.$page);?>
             <?php echo CHtml::checkBox('pages[]',$model->hasPage($page), array('value' => $page,'id' => 'page_'.$page)); ?>
+            <?php echo CHtml::label($title,'page_'.$page);?>
         <?php endforeach;?>
 		<?php echo $form->error($model,'pages'); ?>
 	</div>
@@ -84,11 +83,6 @@
 		<?php echo $form->error($model,'description'); ?>
 	</div>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'changed', array('class' => 'label')); ?>
-		<?php echo $form->textField($model,'changed'); ?>
-		<?php echo $form->error($model,'changed'); ?>
-	</div>
 
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>

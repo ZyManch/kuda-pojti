@@ -4,7 +4,6 @@
 	'filter'=>$model,
 	'columns'=>array(
 		'id',
-		'art',
 		'title',
 		'content',
 		'url',

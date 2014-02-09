@@ -30,11 +30,11 @@ return array_merge_recursive(
             ),
             'cache'=>array(
                 'class'=>'system.caching.CFileCache',
-                'cachePath' => 'cache/moscow/',
+                'cachePath' => '../cache/chelny/',
             ),
         ),
         'params'=>array(
-            'city'       => 'Москва',
+            'city'       => 'Набережные Челны',
             'avatar'     => 'chelny',
             'forum'      => 2,
             'debug'      => true

@@ -56,6 +56,7 @@ div.form fieldset
     -moz-border-radius:7px;
 }
 
+
 div.form label
 {
 	font-weight: bold;
@@ -66,7 +67,11 @@ div.form label.label {
     width: 160px;
     text-align: right;
 }
-
+div.form .redactor_box {
+    display:inline-block;
+    vertical-align:top;
+    width: 775px;
+}
 div.form .row
 {
 	margin: 5px 0;

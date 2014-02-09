@@ -5,7 +5,6 @@
  *
  * The followings are the available columns in table 'mesto':
  * @property integer $id
- * @property string $art
  * @property string $title
  * @property string $content
  * @property string $url
@@ -35,13 +34,14 @@ class Mesto extends ActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('title, pages', 'required'),
+			array('title, pages, url', 'required'),
 			array('enabled', 'numerical', 'integerOnly'=>true),
-			array('art, title, url, email', 'length', 'max'=>64),
+			array('title, url, email', 'length', 'max'=>64),
 			array('changed, avatar', 'length', 'max'=>128),
+			array('description, content', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, art, title, content, url, avatar, email, pages, enabled, description, changed', 'safe', 'on'=>'search'),
+			array('id, title, content, url, avatar, email, pages, enabled, description, changed', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -78,7 +78,6 @@ class Mesto extends ActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'art' => 'Art',
 			'title' => 'Title',
 			'content' => 'Content',
 			'url' => 'Url',
@@ -102,7 +101,6 @@ class Mesto extends ActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('art',$this->art,true);
 		$criteria->compare('title',$this->title,true);
 		$criteria->compare('content',$this->content,true);
 		$criteria->compare('url',$this->url,true);

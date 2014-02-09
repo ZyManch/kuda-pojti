@@ -26,17 +26,14 @@ class MestoController extends Controller
 	public function actionCreate($category_id = null)	{
 		$model=new Mesto;
         if ($category_id) {
-            $model->categories = array($category_id => true);
+            $model->categories = array($category_id);
         }
-
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+        $model->pages = 'main,comments';
 
 		if(isset($_POST['Mesto']))
 		{
-			$model->attributes=$_POST['Mesto'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+			if($this->_fillAndSaveModel($model))
+				$this->redirect(array('view','id'=>$model->url));
 		}
 
 		$this->render('create',array(
@@ -58,9 +55,8 @@ class MestoController extends Controller
 
 		if(isset($_POST['Mesto']))
 		{
-			$model->attributes=$_POST['Mesto'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+			if($this->_fillAndSaveModel($model))
+				$this->redirect(array('view','id'=>$model->url));
 		}
 
 		$this->render('update',array(
@@ -93,4 +89,28 @@ class MestoController extends Controller
 			'model'=>$model,
 		));
 	}
+
+    protected function _fillAndSaveModel(Mesto $model) {
+        $attributes = $_POST['Mesto'];
+        $attributes['pages'] = isset($_POST['pages']) ? implode(',',$_POST['pages']) : 'main';
+        if ($model->getIsNewRecord()) {
+            $attributes['avatar'] = 'none.png';
+        } else {
+            $attributes['avatar'] = $model->id.'.jpg';
+        }
+        $model->attributes = $attributes;
+        if (!$model->save()) {
+            return false;
+        }
+        $avatar = CUploadedFile::getInstance($model,'avatar');
+        if ($avatar) {
+            $image = Yii::app()->image->load($avatar->getTempName());
+            $image->resize(348,154, Image::AUTO_MAX);
+            $image->crop(348,154);
+            $image->save('images/mesto/'.Yii::app()->params['avatar'].'/'.$model->id.'.jpg');
+            $model->avatar = $model->id.'.jpg';
+            $model->save();
+        }
+        return true;
+    }
 }
