@@ -68,12 +68,14 @@ $script->registerScript(
     <div id="map_items">
         <?php foreach ($maps as $pos=>$map): ?>
         <div class="map_item" onclick="map.setCenter(markers[<?php print $pos; ?>].getPosition())">
-            <b>Адрес:</b> <?php print $map->adress?><br/>
+            <b>Адрес:</b> <?php print $map->structure.' '.$map->adress?><br/>
             <b>Телефон:</b> <?php print $map->phones?><br/>
+            <?php if (Yii::app()->params['has_metro']):?>
             <b>Метро:</b> 
             <?php foreach ($map->metro as $metro):?>
                 <?php print $metro->title?>
             <?php endforeach;?>
+            <?php endif;?>
         </div>
         <?php endforeach;?>
     </div>

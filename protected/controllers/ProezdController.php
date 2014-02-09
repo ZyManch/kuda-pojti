@@ -4,15 +4,6 @@ class ProezdController extends Controller {
 
     public $model = 'Maps';
     
-    public function accessRules() {
-    	return array_merge(
-    			array(array('allow',  // allow all users to perform 'index' and 'view' actions
-    					'actions' => array('mesto'),
-    			),),
-    			parent::accessRules()
-    	);
-    }
-    
     public function actionMesto($id) {
 	    $this->model = 'Mesto';
 	    $this->includeCss('proezd');
@@ -64,19 +55,24 @@ class ProezdController extends Controller {
 	 * @param integer $id ID или Url модели
 	 */
 	public function actionUpdate($id) {
+        $this->model = 'Mesto';
 		$model=$this->loadModel($id);
 		$this->setPageTitle('Редактирование '.$model->title,false);
 		$this->initAdminMenu();
 
+        $map = new Maps();
+        $map->mesto_id = $model->id;
+        $map->city = Yii::app()->params['city'];
 		if (isset($_POST['Maps'])) {
-			$model->attributes = $_POST['Maps'];
-			if($model->save()) {
-				$this->redirect(array('view','id'=>$model->id));
+            $map->attributes = $_POST['Maps'];
+			if($map->save()) {
+				$this->redirect(array('mesto','id'=>$model->url));
 			}
 		}
 
 		$this->render('update',array(
 			'model' => $model,
+            'map' => $map
 		));
 	}
 

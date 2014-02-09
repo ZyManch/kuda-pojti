@@ -35,6 +35,7 @@ return array_merge_recursive(
         ),
         'params'=>array(
             'city'       => 'Набережные Челны',
+            'has_metro' => false,
             'avatar'     => 'chelny',
             'forum'      => 2,
             'debug'      => true

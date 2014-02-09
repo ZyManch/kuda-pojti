@@ -25,7 +25,8 @@ class Maps extends ActiveRecord {
 	 */
 	public function rules() {
 		return array(
-			array('mesto_id, adress, phones, map_x, map_y', 'required'),
+			array('mesto_id, city,structure, adress, map_x, map_y', 'required'),
+            array('city,info,adress,structure, 	street,building, phones, office,','safe'),
 			array('mesto_id', 'numerical', 'integerOnly'=>true),
 			array('map_x, map_y', 'numerical'),
 			array('id, mesto_id, adress, phones, map_x, map_y', 'safe', 'on'=>'search'),
@@ -38,7 +39,8 @@ class Maps extends ActiveRecord {
 	public function relations() {
 		return array(
 			'metro' => array(self::MANY_MANY, 'Metro', 'maps_metro(maps_id, metro_id)'),
-		    'work'  => array(self::HAS_MANY, 'Work', 'maps_id')
+		    'work'  => array(self::HAS_MANY, 'Work', 'maps_id'),
+		    'mesto'  => array(self::BELONGS_TO, 'Mesto', 'mesto_id'),
 		);
 	}
 
@@ -48,13 +50,34 @@ class Maps extends ActiveRecord {
 	public function attributeLabels() {
 		return array(
 			'id' => 'ID',
-			'mesto_id' => 'Mesto',
-			'adress' => 'Adress',
-			'phones' => 'Phones',
-			'map_x' => 'Map X',
-			'map_y' => 'Map Y',
+			'mesto_id' => 'Заведение',
+			'city' => 'Город',
+			'structure' => 'Тип',
+			'adress' => 'Название улицы',
+			'street' => 'Дом пол улице',
+			'building' => 'Строение',
+			'office' => 'Офис',
+			'phones' => 'Телефоны',
+			'map_x' => 'Координата X',
+			'map_y' => 'Координата Y',
 		);
 	}
+
+    public function getStructureVariants() {
+        return array(
+            'Улица' => 'Улица',
+            'Переулок' => 'Переулок',
+            'Бульвар' => 'Бульвар',
+            'Площадь' => 'Площадь',
+            'Проспект' => 'Проспект',
+            'Проезд' => 'Проезд',
+            'Тупик' => 'Тупик',
+            'Шоссе' => 'Шоссе',
+            'Набережная' => 'Набережная',
+            'Вал' => 'Вал',
+            'Парк' => 'Парк'
+        );
+    }
 
 	/**
 	 * Осуществляет поиск по таблице.

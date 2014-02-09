@@ -1,9 +1,9 @@
 <?php print $model->content;?>
-<?php $this->widget('zii.widgets.CListView', array(
-	'dataProvider'=>$dataProvider,
-	'itemView'=>'/mesto/_view',
-)); ?>
-	<div class="clear"></div>
+<div class="mesta">
+    <?php $this->widget('zii.widgets.CListView', array(
+        'dataProvider'=>$dataProvider,
+        'itemView'=>'/mesto/_view',
+    )); ?>
 </div>
 <div class="filters gradient1">
     <div class="title">Фильтры</div>
