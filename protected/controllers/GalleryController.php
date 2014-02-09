@@ -2,30 +2,20 @@
 
 class GalleryController extends Controller {
 
+    const FULL_IMAGE_WIDTH = 900;
+    const FULL_IMAGE_HEIGHT = 700;
+    const MINI_IMAGE_WIDTH = 190;
+    const MINI_IMAGE_HEIGHT = 190;
+
     protected $model = 'Mesto';
     
-    /**
-     * Specifies the access control rules.
-     * This method is used by the 'accessControl' filter.
-     * @return array access control rules
-     */
-    public function accessRules() {
-    	return array(
-    			array('allow',  
-    					'actions'=>array('mesto'),
-    					'users'=>array('*'),
-    			),
-    			array('deny',  // deny all users
-    					'users'=>array('*'),
-    			),
-    	);
-    }
+
 	/**
 	 * Екшен показа одной модели.
 	 * @param string $id ID или URL модели
 	 */
 	public function actionMesto($id) {
-		$model = $this->loadModel($id, array('images'));
+		$model = $this->loadModel($id);
 		$this->setPageTitle($model->title, false);
 		$this->initPageMenu($model);
 		$this->initAdminMenu($model);
@@ -37,4 +27,68 @@ class GalleryController extends Controller {
 		));
 	}
 
+    public function actionUpdate($id) {
+        $model = $this->loadModel($id);
+        if (isset($_POST['gallery'])) {
+            /** @var CUploadedFile[] $uploads */
+            $uploads = CUploadedFile::getInstancesByName('gallery');
+            foreach ($uploads as $index => $upload) {
+                $info = getimagesize($upload->getTempName());
+                $width = $info[0];
+                $height = $info[1];
+                $imagePath = 'images/gallery/'.Yii::app()->params['avatar'].'/'.$model->id.'/';
+                $imageName = $this->_getNonExistsFile($imagePath,'.jpg');
+                $miniImagePath = $imagePath.$imageName.'.jpg';
+                $fullImagePath = $imagePath.$imageName.'_full.jpg';
+                $miniZoom = max(self::MINI_IMAGE_WIDTH/$width,self::MINI_IMAGE_HEIGHT/$height);
+                $fullZoom = max(self::FULL_IMAGE_WIDTH/$width,self::FULL_IMAGE_HEIGHT/$height);
+                $gd = Yii::app()->image->load($upload->getTempName());
+                if ($width > self::FULL_IMAGE_WIDTH || $height > self::FULL_IMAGE_HEIGHT) {
+                    $gd->resize(self::FULL_IMAGE_WIDTH, self::FULL_IMAGE_HEIGHT, Image::AUTO);
+                }
+                $gd->save($fullImagePath);
+
+                $gd = Yii::app()->image->load($upload->getTempName());
+                $gd->resize(self::MINI_IMAGE_WIDTH, self::MINI_IMAGE_HEIGHT, Image::WIDTH);
+                $gd->save($miniImagePath);
+
+                $info = getimagesize($upload->getTempName());
+                $image = new Images();
+                $image->mesto_id = $model->id;
+                $image->title = isset($_POST['gallery'][$index]) ? $_POST['gallery'][$index] : '';
+                $image->width = $info[0];
+                $image->height = $info[1];
+                $image->preview = $miniImagePath;
+                $image->url = $fullImagePath;
+                if (!$image->save()) {
+                    $errors = array();
+                    foreach($image->getErrors() as $attribute => $messages) {
+                        $errors[] = $attribute.': '.implode(',', $messages);
+                    }
+                    throw new Exception(implode('; ', $errors));
+                }
+            }
+        }
+        $this->setPageTitle($model->title, false);
+        $this->initAdminMenu($model);
+        $this->render('update', array(
+            'model' => $model,
+            'images' => $model->images
+        ));
+    }
+
+    protected function _getNonExistsFile($path, $ext) {
+        $i=1;
+        while(file_exists($path.$i.$ext)) {
+            $i++;
+        }
+        return $i;
+    }
+
+    public function initAdminMenu($model = null) {
+        parent::initAdminMenu($model);
+        if (isset($this->adminMenu['create'])) {
+            $this->adminMenu['create']['url'] = array('create','id' => $model->url);
+        }
+    }
 }

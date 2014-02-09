@@ -4,14 +4,6 @@ class WorkController extends Controller {
 
     public $model = 'Work';
     
-    public function accessRules() {
-    	return array_merge(
-    			array(array('allow',  // allow all users to perform 'index' and 'view' actions
-    					'actions' => array('mesto'),
-    			),),
-    			parent::accessRules()
-    	);
-    }
 	/**
 	 * Екшен показа одной модели.
 	 * @param string $id ID или URL модели
@@ -67,6 +59,7 @@ class WorkController extends Controller {
 	 * @param integer $id ID или Url модели
 	 */
 	public function actionUpdate($id) {
+        $this->model = 'Mesto';
 		$model=$this->loadModel($id);
 		$this->setPageTitle('Редактирование '.$model->title,false);
 		$this->initAdminMenu();
@@ -77,7 +70,6 @@ class WorkController extends Controller {
 				$this->redirect(array('view','id'=>$model->id));
 			}
 		}
-
 		$this->render('update',array(
 			'model' => $model,
 		));

@@ -1,1 +1,4 @@
-<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
+<?php
+/**
+ * @var $model Mesto
+ */
