@@ -50,6 +50,7 @@
  * @property IWidgetFactory $widgetFactory the widget factory
  * @property IViewRenderer $viewRenderer the view renderer
  * @property CImageComponent $image the view renderer
+ * @property City $city the view renderer
  *
  * @property CController $controller the currently active controller
  * @property CTheme $theme the theme used currently

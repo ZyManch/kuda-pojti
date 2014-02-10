@@ -50,5 +50,7 @@ return array(
     'params'=>array(
         'adminEmail' => 'zymanch@gmail.com',
         'salt' => 'fds78$',
+        'google_analytics' => false, // UA-26989861-1
+        'counters' => false
     ),
 );

@@ -10,10 +10,11 @@
     <link rel="stylesheet" type="text/css" href="css/city/<?php echo Yii::app()->params['avatar'];?>.css" />
 	<title><?php print CHtml::encode($this->pageTitle); ?></title>
 	<script type="text/javascript" src="js/scripts.js"></script>
+    <?php if (Yii::app()->params['google_analytics']): ?>
     <script type="text/javascript">
 
         var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-26989861-1']);
+        _gaq.push(['_setAccount', '<?php echo Yii::app()->params['google_analytics'];?>']);
         _gaq.push(['_setDomainName', 'kuda-pojti.ru']);
         _gaq.push(['_trackPageview']);
 
@@ -24,6 +25,7 @@
         })();
 
     </script>
+    <?php endif;?>
 </head>
 
 <body>
@@ -108,6 +110,7 @@
 		<div class="text">
 			Copyright &copy; <?php echo date('Y'); ?> by <a href="http://vkontakte.ru/zymanch" target="_blank">ZyManch</a>.
 		</div>
+        <?php if (Yii::app()->params['counters']):?>
 		<div class="liveinternet">
 			<!--LiveInternet counter--><script type="text/javascript"><!--
             document.write("<a href='http://www.liveinternet.ru/click' "+
@@ -121,6 +124,7 @@
             "border='0' width='88' height='31'><\/a>")
             //--></script><!--/LiveInternet-->
 		</div>
+        <?php endif;?>
 	</div>
 
 </div>

@@ -11,6 +11,9 @@ $configFile = sprintf($confPath, $serverName);
 if (!file_exists($configFile)) {
     $config = sprintf($configFile, 'kuda-pojti.ru');
 }
+if (!file_exists($configFile)) {
+    die('Город не найден');
+}
 $config = include($configFile);
 if ($config['params']['debug']) {
     define('YII_DEBUG', true);

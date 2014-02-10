@@ -12,7 +12,7 @@ return array_merge_recursive(
         'components'=>array(
             'db'=>array(
                 'class'                 => 'CDbConnection',
-                'connectionString'      => 'mysql:host=localhost;dbname=kudapojti_chelny',
+                'connectionString'      => 'mysql:host=localhost;dbname=kudapojti_moscow',
                 'username'              => 'root',
                 'password'              => '',
                 'emulatePrepare'        => true,
