@@ -70,17 +70,4 @@ class ImagesController extends Controller {
 		));
 	}
 
-	/**
-	 * Администрирование.
-	 */
-	public function actionAdmin() {
-		$model=new Images('search');
-		$model->unsetAttributes();  // clear any default values
-		if (isset($_GET['Images'])) {
-			$model->attributes=$_GET['Images'];
-		}
-		$this->render('admin',array(
-			'model'=>$model,
-		));
-	}
 }

@@ -125,17 +125,4 @@ class ForumsController extends Controller {
 		));
 	}
 
-	/**
-	 * Администрирование.
-	 */
-	public function actionAdmin() {
-		$model=new Forums('search');
-		$model->unsetAttributes();  // clear any default values
-		if (isset($_GET['Forums'])) {
-			$model->attributes=$_GET['Forums'];
-		}
-		$this->render('admin',array(
-			'model'=>$model,
-		));
-	}
 }

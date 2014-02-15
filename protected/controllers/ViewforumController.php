@@ -67,18 +67,4 @@ class ViewforumController extends Controller {
 			'dataProvider'=>$dataProvider,
 		));
 	}
-
-	/**
-	 * Администрирование.
-	 */
-	public function actionAdmin() {
-		$model=new Topics('search');
-		$model->unsetAttributes();  // clear any default values
-		if (isset($_GET['Topics'])) {
-			$model->attributes=$_GET['Topics'];
-		}
-		$this->render('admin',array(
-			'model'=>$model,
-		));
-	}
 }

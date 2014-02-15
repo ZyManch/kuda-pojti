@@ -23,7 +23,10 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'content', array('class' => 'label')); ?>
-		<?php echo $form->textArea($model,'content',array('rows'=>6)); ?>
+        <?php $this->widget('ext.RedactorJS.Redactor',array(
+                'model'=>$model,
+                'attribute'=>'content',
+            ));?>
 		<?php echo $form->error($model,'content'); ?>
 	</div>
 
@@ -44,8 +47,9 @@
 
     <div class="row">
         <?php if ($model->typeFilter):?>
+            <?php echo $form->labelEx($model,'filter', array('class' => 'label')); ?>
             <?php foreach ($model->getTypeFilter() as $key => $value):?>
-                <?=$key;?>,<?=$value;?>|
+                <?=CHtml::link($value, array('categories/view', 'id' => $model->url,'type' => $key));?>,
             <?php endforeach;?>
             <?php echo CHtml::button('Редактировать',array('onclick' => "location.href='/filters/update/".$model->typeFilter->id."';"));?>
         <?php endif;?>
@@ -60,14 +64,13 @@
             array('onchange' => 'js:$("#avatar").attr("src","/images/categories/"+this.value);')
         ); ?>
 		<?php echo $form->error($model,'avatar'); ?>
-        <br>
         <?php Yii::app()->clientScript->registerScript('load-avcatar','$("#Categories_avatar").trigger("change");');?>
         <?php echo CHtml::image('','', array('id' => 'avatar'));?>
 	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'position', array('class' => 'label')); ?>
-		<?php echo $form->textField($model,'position'); ?>
+		<?php echo $form->textField($model,'position', array('size' => 3)); ?>
 		<?php echo $form->error($model,'position'); ?>
 	</div>
 

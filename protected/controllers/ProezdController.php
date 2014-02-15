@@ -88,17 +88,4 @@ class ProezdController extends Controller {
 		));
 	}
 
-	/**
-	 * Администрирование.
-	 */
-	public function actionAdmin() {
-		$model=new Maps('search');
-		$model->unsetAttributes();  // clear any default values
-		if (isset($_GET['Maps'])) {
-			$model->attributes=$_GET['Maps'];
-		}
-		$this->render('admin',array(
-			'model'=>$model,
-		));
-	}
 }

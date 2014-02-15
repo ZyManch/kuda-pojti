@@ -36,7 +36,7 @@ class Controller extends CController
                 'users'=>array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions'=>array('create','update', 'admin','delete'),
+                'actions'=>array('create','update', 'delete'),
                 'roles'=>array('moderator'),
             ),
             array('deny',  // deny all users
@@ -124,9 +124,6 @@ class Controller extends CController
 				    $this->adminMenu['delete'] = array('label'=>'Удалить', 'url'=>array('delete','id'=>$model->url),'image' => 'delete');
                 }
 			}
-            if ($action != 'admin') {
-			    $this->adminMenu['admin'] = array('label'=>'Администрирование', 'url'=>array('admin'),'image' => 'list');
-            }
 		}
 	}
 	

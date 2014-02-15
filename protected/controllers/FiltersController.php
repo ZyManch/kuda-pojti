@@ -19,28 +19,6 @@ class FiltersController extends Controller
 	}
 
 	/**
-	 * Specifies the access control rules.
-	 * This method is used by the 'accessControl' filter.
-	 * @return array access control rules
-	 */
-	public function accessRules()
-	{
-		return array(
-			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
-				'users'=>array('*'),
-			),
-			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update', 'admin','delete'),
-                'roles'=>array('moderator'),
-			),
-			array('deny',  // deny all users
-				'users'=>array('*'),
-			),
-		);
-	}
-
-	/**
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
 	 */
@@ -62,9 +40,9 @@ class FiltersController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Filters']))
-		{
-			$model->attributes=$_POST['Filters'];
+        $attributes = $this->_getFilterParam($model);
+        if ($attributes) {
+            $model->attributes=$attributes;
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -84,12 +62,9 @@ class FiltersController extends Controller
         /** @var Filters $model */
 		$model=$this->loadModel($id);
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-        $attrName = get_class($model);
-		if(isset($_POST[$attrName]))
-		{
-			$model->attributes=$_POST[$attrName];
+        $attributes = $this->_getFilterParam($model);
+		if ($attributes) {
+			$model->attributes=$attributes;
 			if($model->save()) {
 				$this->redirect(array('view','id'=>$model->id));
             }
@@ -111,19 +86,31 @@ class FiltersController extends Controller
 		));
 	}
 
-	/**
-	 * Manages all models.
-	 */
-	public function actionAdmin()
-	{
-		$model=new Filters('search');
-		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Filters']))
-			$model->attributes=$_GET['Filters'];
-
-		$this->render('admin',array(
-			'model'=>$model,
-		));
-	}
+    protected function _getFilterParam($model) {
+        $modelClass = get_class($model);
+        if (!isset($_POST[$modelClass]) || !is_array($_POST[$modelClass])) {
+            return false;
+        }
+        $attributes = $_POST[$modelClass];
+        $type = $attributes['type'];
+        $params = $attributes['params'][$type];
+        switch ($type) {
+            case 'range':
+                $attributes['params'] = implode("\n", array($params[0],$params[1],$params[2]));
+                break;
+            case 'list':
+                $attributes['params'] = array();
+                foreach ($params['keys'] as $index => $key) {
+                    if ($key) {
+                        $attributes['params'] = $key.'='.$params['values'][$index];
+                    }
+                }
+                $attributes['params'] = implode("\n", $attributes['params']);
+                break;
+            default:
+                $attributes['params'] = '';
+        }
+        return $attributes;
+    }
 
 }

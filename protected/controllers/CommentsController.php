@@ -4,14 +4,6 @@ class CommentsController extends Controller {
 
     public $model = 'Forums';
     
-    public function accessRules() {
-        return array_merge(
-    	    array(array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions' => array('mesto'),
-			),),
-            parent::accessRules()
-    	);
-    }
 	/**
 	 * Екшен показа одной модели.
 	 * @param string $id ID или URL модели
@@ -104,17 +96,4 @@ class CommentsController extends Controller {
 		));
 	}
 
-	/**
-	 * Администрирование.
-	 */
-	public function actionAdmin() {
-		$model=new Forums('search');
-		$model->unsetAttributes();  // clear any default values
-		if (isset($_GET['Forums'])) {
-			$model->attributes=$_GET['Forums'];
-		}
-		$this->render('admin',array(
-			'model'=>$model,
-		));
-	}
 }

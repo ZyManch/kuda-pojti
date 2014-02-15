@@ -68,18 +68,4 @@ class UsersController extends Controller {
 			'dataProvider'=>$dataProvider,
 		));
 	}
-
-	/**
-	 * Администрирование.
-	 */
-	public function actionAdmin() {
-		$model=new Users('search');
-		$model->unsetAttributes();  // clear any default values
-		if (isset($_GET['Users'])) {
-			$model->attributes=$_GET['Users'];
-		}
-		$this->render('admin',array(
-			'model'=>$model,
-		));
-	}
 }

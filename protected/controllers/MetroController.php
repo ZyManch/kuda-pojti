@@ -76,20 +76,7 @@ class MetroController extends Controller {
 		));
 	}
 
-	/**
-	 * Администрирование.
-	 */
-	public function actionAdmin() {
-		$model=new Metro('search');
-		$model->unsetAttributes();  // clear any default values
-		if (isset($_GET['Metro'])) {
-			$model->attributes=$_GET['Metro'];
-		}
-		$this->render('admin',array(
-			'model'=>$model,
-		));
-	}
-	
+
 	public function actionSearch($id) {
 	    header('Content-Type: application/x-javascript');
 	    $criteria = new CDbCriteria();

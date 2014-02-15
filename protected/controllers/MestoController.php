@@ -75,20 +75,6 @@ class MestoController extends Controller
 		));
 	}
 
-	/**
-	 * Manages all models.
-	 */
-	public function actionAdmin()
-	{
-		$model=new Mesto('search');
-		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Mesto']))
-			$model->attributes=$_GET['Mesto'];
-
-		$this->render('admin',array(
-			'model'=>$model,
-		));
-	}
 
     protected function _fillAndSaveModel(Mesto $model) {
         $attributes = $_POST['Mesto'];

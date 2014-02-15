@@ -195,6 +195,31 @@ class Filters extends ActiveRecord
         );
     }
 
+    public function getFormatsOfParam() {
+        return array(
+            'Radio' => 'list',
+            'Multy' => 'list',
+            'RangeIn' => 'range',
+            'RangeOut' => 'range',
+            'Metro' => 'empty',
+            'Work' => 'empty',
+            'Bool' => 'empty'
+        );
+    }
+
+    public function getRangeAdminLabel() {
+        return array(
+            'from' => '',
+            'to' => '',
+            'text' => ''
+        );
+    }
+
+    public function getFormatOfParam() {
+        $list = $this->getFormatsOfParam();
+        return $list[$this->type];
+    }
+
     public function getKingVariants() {
         return array(
             'general' => 'Главный',

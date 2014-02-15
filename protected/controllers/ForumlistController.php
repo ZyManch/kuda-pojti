@@ -91,17 +91,4 @@ class ForumlistController extends Controller {
 		));
 	}
 
-	/**
-	 * Администрирование.
-	 */
-	public function actionAdmin() {
-		$model=new ForumsCats('search');
-		$model->unsetAttributes();  // clear any default values
-		if (isset($_GET['ForumsCats'])) {
-			$model->attributes=$_GET['ForumsCats'];
-		}
-		$this->render('admin',array(
-			'model'=>$model,
-		));
-	}
 }

@@ -4,27 +4,6 @@ class CategoriesController extends Controller
 {
 	protected $model = 'Categories';
 
-	/**
-	 * Specifies the access control rules.
-	 * This method is used by the 'accessControl' filter.
-	 * @return array access control rules
-	 */
-	public function accessRules()
-	{
-		return array(
-			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','mesto'),
-				'users'=>array('*'),
-			),
-			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update', 'admin','delete'),
-				'roles'=>array('moderator'),
-			),
-			array('deny',  // deny all users
-				'users'=>array('*'),
-			),
-		);
-	}
 
     public function initAdminMenu($model = null) {
         parent::initAdminMenu($model);
@@ -137,21 +116,5 @@ class CategoriesController extends Controller
 		));
 	}
 
-	/**
-	 * Manages all models.
-	 */
-	public function actionAdmin()
-	{
-		$model=new Categories('search');
-		$this->setPageTitle('Категории');
-        $this->initAdminMenu();
-		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Categories']))
-			$model->attributes=$_GET['Categories'];
-
-		$this->render('admin',array(
-			'model'=>$model,
-		));
-	}
 
 }

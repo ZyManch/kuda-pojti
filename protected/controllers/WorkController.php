@@ -86,18 +86,4 @@ class WorkController extends Controller {
 			'dataProvider'=>$dataProvider,
 		));
 	}
-
-	/**
-	 * Администрирование.
-	 */
-	public function actionAdmin() {
-		$model=new Work('search');
-		$model->unsetAttributes();  // clear any default values
-		if (isset($_GET['Work'])) {
-			$model->attributes=$_GET['Work'];
-		}
-		$this->render('admin',array(
-			'model'=>$model,
-		));
-	}
 }

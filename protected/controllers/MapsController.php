@@ -4,15 +4,7 @@ class MapsController extends Controller {
 
     public $model = 'Maps';
     
-    public function accessRules() {
-    	return array_merge(
-    			array(array('allow',  // allow all users to perform 'index' and 'view' actions
-    					'actions' => array('mesto'),
-    			),),
-    			parent::accessRules()
-    	);
-    }
-    
+
     public function actionMesto($id) {
         $this->model = 'Mesto';
     	$model = $this->loadModel($id);
@@ -88,17 +80,4 @@ class MapsController extends Controller {
 		));
 	}
 
-	/**
-	 * Администрирование.
-	 */
-	public function actionAdmin() {
-		$model=new Maps('search');
-		$model->unsetAttributes();  // clear any default values
-		if (isset($_GET['Maps'])) {
-			$model->attributes=$_GET['Maps'];
-		}
-		$this->render('admin',array(
-			'model'=>$model,
-		));
-	}
 }
