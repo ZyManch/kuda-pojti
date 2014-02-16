@@ -34,6 +34,14 @@ class Filters extends ActiveRecord
 		return 'filters';
 	}
 
+    public function behaviors(){
+        return array(
+            'migration' => array(
+                'class' => 'MigrationBehavior',
+            ),
+        );
+    }
+
 	/**
 	 * @return array validation rules for model attributes.
 	 */

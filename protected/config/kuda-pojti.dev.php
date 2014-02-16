@@ -38,7 +38,6 @@ return array_merge_recursive(
             )
         ),
         'params'=>array(
-            'migration' => 'chelny',
             'forum'      => 2,
             'debug'      => true
         ),

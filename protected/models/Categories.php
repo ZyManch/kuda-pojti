@@ -24,7 +24,15 @@ class Categories extends ActiveRecord
 		return 'categories';
 	}
 
-	/**
+    public function behaviors(){
+        return array(
+            'migration' => array(
+                'class' => 'MigrationBehavior',
+            ),
+        );
+    }
+
+    /**
 	 * @return array validation rules for model attributes.
 	 */
 	public function rules()

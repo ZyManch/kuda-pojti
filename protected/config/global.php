@@ -7,6 +7,7 @@ return array(
     'preload'        => array('log'),
     'import'=>array(
         'application.models.*',
+        'application.behaviors.*',
         'application.components.*',
         'application.filters.*',
         'application.forms.*'

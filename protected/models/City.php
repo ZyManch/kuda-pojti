@@ -24,6 +24,14 @@ class City extends ActiveRecord {
 		return 'city';
 	}
 
+    public function behaviors(){
+        return array(
+            'migration' => array(
+                'class' => 'MigrationBehavior',
+            ),
+        );
+    }
+
 	/**
 	 * @return array правила валидации полей.
 	 */

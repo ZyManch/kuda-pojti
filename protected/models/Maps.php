@@ -34,6 +34,14 @@ class Maps extends ActiveRecord {
 		);
 	}
 
+    public function behaviors(){
+        return array(
+            'migration' => array(
+                'class' => 'MigrationBehavior',
+            ),
+        );
+    }
+
 	/**
 	 * @return array связи с другими моделями.
 	 */

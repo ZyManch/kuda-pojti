@@ -31,6 +31,14 @@ class Work extends ActiveRecord {
 		);
 	}
 
+    public function behaviors(){
+        return array(
+            'migration' => array(
+                'class' => 'MigrationBehavior',
+            ),
+        );
+    }
+
 	/**
 	 * @return array связи с другими моделями.
 	 */
@@ -55,7 +63,7 @@ class Work extends ActiveRecord {
 
 	/**
 	 * Осуществляет поиск по таблице.
-	 * @return CActiveDataProvider 
+	 * @return CActiveDataProvider
 	 */
 	public function search() {
 		// Warning: Please modify the following code to remove attributes that
