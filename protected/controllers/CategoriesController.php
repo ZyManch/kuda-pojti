@@ -5,10 +5,16 @@ class CategoriesController extends Controller
 	protected $model = 'Categories';
 
 
-    public function initAdminMenu($model = null) {
-        parent::initAdminMenu($model);
-        if ($model) {
+    public function _initAdminMenu($model = null) {
+        $this->adminMenu = array();
+        $this->adminMenu['index'] = array('label'=>'Список', 'url'=>array('index'),'image' => 'list');
+        $this->adminMenu['create'] = array('label'=>'Добавить', 'url'=>array('create'),'image' => 'add');
+        if (!is_null($model)) {
+            $this->adminMenu['view'] = array('label'=>'Просмотр', 'url'=>array('view', 'id'=>$model->url),'image' => 'view');
+            $this->adminMenu['update'] = array('label'=>'Редактировать', 'url'=>array('update', 'id'=>$model->url),'image' => 'update');
+            $this->adminMenu['delete'] = array('label'=>'Удалить', 'url'=>array('delete','id'=>$model->url),'image' => 'delete');
             $this->adminMenu['mesto'] = array('label' => 'Добавить место', 'url' => array('mesto/create','category_id' => $model->id),'image' => 'add');
+            $this->adminMenu['filters'] = array('label' => 'Фильтры', 'url' => array('filters/index','id' => $model->url),'image' => 'list');
         }
     }
 

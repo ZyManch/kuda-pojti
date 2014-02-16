@@ -63,7 +63,8 @@ class Filters extends ActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-		    'mestoFilters' => array(self::HAS_MANY, 'MestoFilters', 'filter_id', 'on' => 'mestoFilters.mesto_id = :mesto')
+		    'mestoFilters' => array(self::HAS_MANY, 'MestoFilters', 'filter_id', 'on' => 'mestoFilters.mesto_id = :mesto'),
+		    'category' => array(self::BELONGS_TO, 'Categories', 'category_id'),
 		);
 	}
 

@@ -18,27 +18,22 @@ class FiltersController extends Controller
 		);
 	}
 
-	/**
-	 * Displays a particular model.
-	 * @param integer $id the ID of the model to be displayed
-	 */
-	public function actionView($id)
-	{
-		$this->render('view',array(
-			'model'=>$this->loadModel($id),
-		));
-	}
 
 	/**
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
-	public function actionCreate()
+	public function actionCreate($id = null)
 	{
 		$model=new Filters;
-
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+        $this->model = 'Categories';
+        if ($id) {
+            $categories = $this->loadModel($id);
+            $model->category_id = $categories->id;
+            $this->initAdminMenu($categories);
+        } else {
+            $this->initAdminMenu();
+        }
 
         $attributes = $this->_getFilterParam($model);
         if ($attributes) {
@@ -57,11 +52,10 @@ class FiltersController extends Controller
 	 * If update is successful, the browser will be redirected to the 'view' page.
 	 * @param integer $id the ID of the model to be updated
 	 */
-	public function actionUpdate($id)
-	{
+	public function actionUpdate($id) {
         /** @var Filters $model */
 		$model=$this->loadModel($id);
-
+        $this->initAdminMenu($model);
         $attributes = $this->_getFilterParam($model);
 		if ($attributes) {
 			$model->attributes=$attributes;
@@ -78,8 +72,14 @@ class FiltersController extends Controller
 	/**
 	 * Lists all models.
 	 */
-	public function actionIndex()
-	{
+	public function actionIndex($id = null)	{
+        $this->model = 'Categories';
+        if ($id) {
+            $categories = $this->loadModel($id);
+            $this->initAdminMenu($categories);
+        } else {
+            $this->initAdminMenu();
+        }
 		$dataProvider=new CActiveDataProvider('Filters');
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
@@ -112,5 +112,27 @@ class FiltersController extends Controller
         }
         return $attributes;
     }
+
+    /**
+     * @param Filters $model
+     */
+    public function _initAdminMenu($model = null) {
+        $this->adminMenu = array();
+        if (!is_null($model) && $model instanceof Categories) {
+            $this->adminMenu['category'] = array('label'=>'Категория', 'url'=>array('categories/view','id' => $model->url),'image' => 'list');
+            $this->adminMenu['create'] = array('label'=>'Добавить', 'url'=>array('create', 'id' => $model->url ),'image' => 'add');
+        } else {
+            $this->adminMenu['create'] = array('label'=>'Добавить', 'url'=>array('create', 'id' => $model? $model->category->url : null),'image' => 'add');
+        }
+        if (!is_null($model) && $model instanceof Filters) {
+            if ($model->category_id) {
+                $this->adminMenu['category'] = array('label'=>'Категория', 'url'=>array('categories/view','id' => $model->category->url),'image' => 'list');
+                $this->adminMenu['index'] = array('label'=>'Список', 'url'=>array('index','id' => $model->category_id),'image' => 'list');
+            }
+            $this->adminMenu['update'] = array('label'=>'Редактировать', 'url'=>array('update', 'id'=>$model->id),'image' => 'update');
+            $this->adminMenu['delete'] = array('label'=>'Удалить', 'url'=>array('delete','id'=>$model->id),'image' => 'delete');
+        }
+    }
+
 
 }

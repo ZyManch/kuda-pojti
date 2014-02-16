@@ -592,3 +592,7 @@ table{
 .yiiPager li.hidden a, .yiiPager li.hidden a:visited{
 	color: #a98f8a !important;
 }
+.view-element {
+    margin: 4px;
+    padding: 5px;
+}

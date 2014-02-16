@@ -1,8 +1,4 @@
-<div class="view">
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('id')); ?>:</b>
-	<?php echo CHtml::link(CHtml::encode($data->id), array('view', 'id'=>$data->id)); ?>
-	<br />
+<div class="view-element gradient1">
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('title')); ?>:</b>
 	<?php echo CHtml::encode($data->title); ?>
@@ -16,23 +12,9 @@
 	<?php echo CHtml::encode($data->type); ?>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('params')); ?>:</b>
-	<?php echo CHtml::encode($data->params); ?>
-	<br />
-
 	<b><?php echo CHtml::encode($data->getAttributeLabel('category_id')); ?>:</b>
-	<?php echo CHtml::encode($data->category_id); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('king')); ?>:</b>
-	<?php echo CHtml::encode($data->king); ?>
-	<br />
-
-	<?php /*
-	<b><?php echo CHtml::encode($data->getAttributeLabel('position')); ?>:</b>
-	<?php echo CHtml::encode($data->position); ?>
-	<br />
-
-	*/ ?>
+	<?php echo CHtml::link($data->category->title, array('categories/view', 'id' => $data->category->url)); ?>
+    <br />
+    <?php echo CHtml::button('Редактировать', array('onclick' => 'location.href="'.CHtml::normalizeUrl(array('update','id' => $data->id)).'"'));?>
 
 </div>

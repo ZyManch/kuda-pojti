@@ -106,26 +106,32 @@ class Controller extends CController
     }
 	
 	public function initAdminMenu($model = null) {
-		if(Yii::app()->user->checkAccess('root')) {
+        if (!Yii::app()->user->checkAccess('moderator')) {
+            return false;
+        }
+        $this->_initAdminMenu($model);
+		if(is_null($this->adminMenu)) {
 			$this->adminMenu = array();
-            $action = $this->getAction()->getId();
-            if ($action != 'index') {
-			    $this->adminMenu['index'] = array('label'=>'Список', 'url'=>array('index'),'image' => 'list');
-            }
+            $this->adminMenu['index'] = array('label'=>'Список', 'url'=>array('index'),'image' => 'list');
 			$this->adminMenu['create'] = array('label'=>'Добавить', 'url'=>array('create'),'image' => 'add');
 			if (!is_null($model)) {
-                if ($action != 'view') {
-				    $this->adminMenu['view'] = array('label'=>'Просмотр', 'url'=>array('view', 'id'=>$model->url),'image' => 'view');
-                }
-                if ($action != 'update') {
-				    $this->adminMenu['update'] = array('label'=>'Редактировать', 'url'=>array('update', 'id'=>$model->url),'image' => 'update');
-                }
-                if ($action != 'delete') {
-				    $this->adminMenu['delete'] = array('label'=>'Удалить', 'url'=>array('delete','id'=>$model->url),'image' => 'delete');
-                }
+                $this->adminMenu['view'] = array('label'=>'Просмотр', 'url'=>array('view', 'id'=>$model->url),'image' => 'view');
+                $this->adminMenu['update'] = array('label'=>'Редактировать', 'url'=>array('update', 'id'=>$model->url),'image' => 'update');
+                $this->adminMenu['delete'] = array('label'=>'Удалить', 'url'=>array('delete','id'=>$model->url),'image' => 'delete');
 			}
 		}
+        $currentAction = $this->getAction()->getId();
+        foreach ($this->adminMenu as $action => $params) {
+            if ($currentAction == $action) {
+                unset($this->adminMenu[$action]);
+            }
+        }
+        return true;
 	}
+
+    protected function _initAdminMenu($model = null) {
+        $this->adminMenu = null;
+    }
 	
 	public function setPageTitle($title, $withPrefix = true) {
 		if ($withPrefix) {

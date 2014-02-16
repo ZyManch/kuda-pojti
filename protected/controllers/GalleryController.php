@@ -91,4 +91,16 @@ class GalleryController extends Controller {
             $this->adminMenu['create']['url'] = array('create','id' => $model->url);
         }
     }
+
+
+    /**
+     * @param Mesto $model
+     */
+    public function _initAdminMenu($model = null) {
+        $this->adminMenu = array();
+        if (!is_null($model)) {
+            $this->adminMenu['mesto'] = array('label'=>'Просмотр', 'url'=>array('mesto', 'id'=>$model->url),'image' => 'view');
+            $this->adminMenu['update'] = array('label'=>'Редактировать', 'url'=>array('update', 'id'=>$model->url),'image' => 'update');
+        }
+    }
 }

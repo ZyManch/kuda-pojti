@@ -61,8 +61,8 @@ class WorkController extends Controller {
 	public function actionUpdate($id) {
         $this->model = 'Mesto';
 		$model=$this->loadModel($id);
-		$this->setPageTitle('Редактирование '.$model->title,false);
-		$this->initAdminMenu();
+		$this->setPageTitle('График работы '.$model->title,false);
+		$this->initAdminMenu($model);
 
 		if (isset($_POST['Work'])) {
 			$model->attributes = $_POST['Work'];
@@ -86,4 +86,17 @@ class WorkController extends Controller {
 			'dataProvider'=>$dataProvider,
 		));
 	}
+
+
+
+    /**
+     * @param Mesto $model
+     */
+    public function _initAdminMenu($model = null) {
+        $this->adminMenu = array();
+        if (!is_null($model)) {
+            $this->adminMenu['mesto'] = array('label'=>'Просмотр', 'url'=>array('mesto', 'id'=>$model->url),'image' => 'view');
+            $this->adminMenu['update'] = array('label'=>'Редактировать', 'url'=>array('update', 'id'=>$model->url),'image' => 'update');
+        }
+    }
 }

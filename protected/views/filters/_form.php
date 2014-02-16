@@ -14,14 +14,6 @@ Yii::app()->clientScript->registerScript(
 );
 ?>
 <div class="form">
-
-
-    <?php echo CHtml::link(CHtml::image('/images/template/buttons/find.png'),array('admin'));?>
-    <?php if (!$model->getIsNewRecord()):?>
-        <?php echo CHtml::link(CHtml::image('/images/template/buttons/delete.png'),array('delete','id' => $model->id));?>
-        <?php echo CHtml::link(CHtml::image('/images/template/buttons/view.png'),array('view','id' => $model->id));?>
-    <?php endif;?>
-
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'filters-form',
 	'enableAjaxValidation'=>false,
