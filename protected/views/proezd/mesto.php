@@ -5,7 +5,7 @@ $gMap = new EGMap();
 foreach ($maps as $map) {
     if (!$map->map_x || !$map->map_y) {
         $geocoded_address = new EGMapGeocodedAddress(
-        	Yii::app()->params['city'] . ', ' . $map->adress
+        	Yii::app()->city->title . ', ' . $map->adress
         );
         $geocoded_address->geocode($gMap->getGMapClient());
         $map->map_x = $geocoded_address->getLat();
@@ -70,7 +70,7 @@ $script->registerScript(
         <div class="map_item" onclick="map.setCenter(markers[<?php print $pos; ?>].getPosition())">
             <b>Адрес:</b> <?php print $map->structure.' '.$map->adress?><br/>
             <b>Телефон:</b> <?php print $map->phones?><br/>
-            <?php if (Yii::app()->params['has_metro']):?>
+            <?php if (Yii::app()->city->has_metro == 'yes'):?>
             <b>Метро:</b> 
             <?php foreach ($map->metro as $metro):?>
                 <?php print $metro->title?>

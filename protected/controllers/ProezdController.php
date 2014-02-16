@@ -62,7 +62,7 @@ class ProezdController extends Controller {
 
         $map = new Maps();
         $map->mesto_id = $model->id;
-        $map->city = Yii::app()->params['city'];
+        $map->city = Yii::app()->city->id;
 		if (isset($_POST['Maps'])) {
             $map->attributes = $_POST['Maps'];
 			if($map->save()) {

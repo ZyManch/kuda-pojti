@@ -49,9 +49,7 @@ class MestoController extends Controller
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
-
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+        $this->initAdminMenu($model);
 
 		if(isset($_POST['Mesto']))
 		{
@@ -93,7 +91,7 @@ class MestoController extends Controller
             $image = Yii::app()->image->load($avatar->getTempName());
             $image->resize(348,154, Image::AUTO_MAX);
             $image->crop(348,154);
-            $image->save('images/mesto/'.Yii::app()->params['avatar'].'/'.$model->id.'.jpg');
+            $image->save('images/mesto/'.Yii::app()->city->folder.'/'.$model->id.'.jpg');
             $model->avatar = $model->id.'.jpg';
             $model->save();
         }

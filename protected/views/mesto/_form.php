@@ -45,7 +45,7 @@
 
 	<div class="row">
         <?php if($model->avatar):?>
-            <img src="/images/mesto/<?php echo Yii::app()->params['avatar'];?>/<?php echo $model->avatar;?>" style="margin-left: 165px;">
+            <img src="/images/mesto/<?php echo Yii::app()->city->folder;?>/<?php echo $model->avatar;?>" style="margin-left: 165px;">
             <br><br>
         <?php endif;?>
 		<?php echo $form->labelEx($model,'avatar', array('class' => 'label')); ?>

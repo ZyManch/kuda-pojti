@@ -2,27 +2,13 @@
 
 class WorkController extends Controller {
 
-    public $model = 'Work';
-    
-	/**
-	 * Екшен показа одной модели.
-	 * @param string $id ID или URL модели
-	 */
-	public function actionView($id) {
-		$model = $this->loadModel($id);
-		$this->setPageTitle($model->title);
-		$this->initAdminMenu($model);
-		$this->render('view', array(
-			'model' => $model,
-		));
-	}
-	
+    public $model = 'Mesto';
+
 	/**
 	 * Екшен показа одной модели.
 	 * @param string $id ID или URL модели
 	 */
     public function actionMesto($id) {
-	    $this->model = 'Mesto';
 	    $this->includeCss('work');
 	    $model = $this->loadModel($id,array('maps.work'));
 	    $this->setPageTitle('График работы '.$model->title, false);
@@ -34,59 +20,67 @@ class WorkController extends Controller {
 	    ));
 	}
 
-	/**
-	 * Екшен создания новой модели
-	 */
-	public function actionCreate() {
-		$model = new Work;
-		$this->setPageTitle('');
-		$this->initAdminMenu();
-
-		if (isset($_POST['Work'])) {
-			$model->attributes=$_POST['Work'];
-			if($model->save()) {
-				$this->redirect(array('view','id'=>$model->id));
-			}
-		}
-
-		$this->render('create',array(
-			'model'=>$model,
-		));
-	}
 
 	/**
 	 * Екшен редактирования модели
 	 * @param integer $id ID или Url модели
 	 */
 	public function actionUpdate($id) {
-        $this->model = 'Mesto';
+        /** @var Mesto $model */
 		$model=$this->loadModel($id);
 		$this->setPageTitle('График работы '.$model->title,false);
 		$this->initAdminMenu($model);
 
-		if (isset($_POST['Work'])) {
-			$model->attributes = $_POST['Work'];
-			if($model->save()) {
-				$this->redirect(array('view','id'=>$model->id));
-			}
+        $newWorks = $this->_extractWorksFromPost();
+		if (!is_null($newWorks)) {
+            foreach ($model->maps as $map) {
+                $oldWorks = $map->work;
+                if (!isset($newWorks[$map->id])) {
+                    foreach ($oldWorks as $workModel) {
+                        $workModel->delete();
+                    }
+                } else {
+                    foreach ($newWorks[$map->id] as $work) {
+                        if (isset($work['id'])) {
+                            $workModel = $oldWorks[$work['id']];
+                            unset($oldWorks[$work['id']]);
+                        } else {
+                            $workModel = new Work();
+                        }
+                        $workModel->attributes = $work;
+                        if (!$workModel->save()) {
+                            throw new Exception('Ошибка сохранения времени работы');
+                        }
+                    }
+                    foreach ($oldWorks as $workModel) {
+                        $workModel->delete();
+                    }
+                }
+            }
+            $this->redirect(array('mesto','id'=>$model->url));
 		}
 		$this->render('update',array(
 			'model' => $model,
 		));
 	}
 
-	/**
-	 * Екшен списка моделей.
-	 */
-	public function actionIndex() {
-		$this->setPageTitle('');
-		$this->initAdminMenu();
-		$dataProvider = new CActiveDataProvider('Work');
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
-		));
-	}
-
+    protected function _extractWorksFromPost() {
+        if (!isset($_POST['Work'])) {
+            return null;
+        }
+        $result = array();
+        foreach ($_POST['Work'] as $work) {
+            if (!$work['id']) {
+                unset($work['id']);
+            }
+            $timeBegin = explode(':',$work['time_begin']);
+            $timeEnd = explode(':',$work['time_end']);
+            $work['time_begin'] = $timeBegin[0]*60 +$timeBegin[1];
+            $work['time_end'] = $timeEnd[0]*60 +$timeEnd[1];
+            $result[$work['maps_id']][] = $work;
+        }
+        return $result;
+    }
 
 
     /**

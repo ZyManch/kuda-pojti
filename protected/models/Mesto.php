@@ -15,6 +15,7 @@
  * @property string $description
  * @property integer $changed
  * @property Categories[] $categories
+ * @property Maps[] $maps
  */
 class Mesto extends ActiveRecord
 {

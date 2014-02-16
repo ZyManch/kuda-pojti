@@ -7,7 +7,7 @@
 	<link rel="stylesheet" type="text/css" href="css/main.css" />
 	<link rel="stylesheet" type="text/css" href="css/inputs.css" />
 	<link rel="stylesheet" type="text/css" href="css/form.css" />
-    <link rel="stylesheet" type="text/css" href="css/city/<?php echo Yii::app()->params['avatar'];?>.css" />
+    <link rel="stylesheet" type="text/css" href="css/city/<?php echo Yii::app()->city->folder;?>.css" />
 	<title><?php print CHtml::encode($this->pageTitle); ?></title>
 	<script type="text/javascript" src="js/scripts.js"></script>
     <?php if (Yii::app()->params['google_analytics']): ?>
@@ -40,7 +40,7 @@
 			<input type="text"/>
 		</div>
 	</div>
-	<div id="main" style="background-image: url(/images/avatars/<?php print Yii::app()->params['avatar'];?>.jpg);">
+	<div id="main" style="background-image: url(/images/avatars/<?php print Yii::app()->city->folder;?>.jpg);">
 		<div class="city_label"></div>
 		<div class="city_box">
 			<?php $this->renderPartial('//widgets/select', array(
@@ -48,7 +48,7 @@
 					//'moscow' => 'Москва',
 					'chelny' => 'Набережные Челны',
 				),
-				'selected' => Yii::app()->params['avatar']
+				'selected' => Yii::app()->city->folder
 			));?>
 		</div>
 	</div>

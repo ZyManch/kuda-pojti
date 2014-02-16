@@ -34,13 +34,11 @@ return array_merge_recursive(
             ),
             'city'=>array(
                 'class' => 'City',
-                'load' => 'chelny'
+                'load' => 'moscow'
             )
         ),
         'params'=>array(
-            'city'       => 'Набережные Челны',
-            'has_metro' => false,
-            'avatar'     => 'chelny',
+            'migration' => 'moscow',
             'forum'      => 2,
             'debug'      => true
         ),

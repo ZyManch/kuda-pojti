@@ -36,7 +36,7 @@ class GalleryController extends Controller {
                 $info = getimagesize($upload->getTempName());
                 $width = $info[0];
                 $height = $info[1];
-                $imagePath = 'images/gallery/'.Yii::app()->params['avatar'].'/'.$model->id.'/';
+                $imagePath = 'images/gallery/'.Yii::app()->city->folder.'/'.$model->id.'/';
                 $imageName = $this->_getNonExistsFile($imagePath,'.jpg');
                 $miniImagePath = $imagePath.$imageName.'.jpg';
                 $fullImagePath = $imagePath.$imageName.'_full.jpg';

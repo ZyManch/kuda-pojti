@@ -38,9 +38,7 @@ return array_merge_recursive(
             )
         ),
         'params'=>array(
-            'city'       => 'Набережные Челны',
-            'has_metro' => false,
-            'avatar'     => 'chelny',
+            'migration' => 'chelny',
             'forum'      => 2,
             'debug'      => true
         ),

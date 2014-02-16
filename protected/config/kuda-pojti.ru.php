@@ -25,12 +25,14 @@ return array_merge_recursive(
                 'class'=>'system.caching.CFileCache',
                 'cachePath' => 'cache/moscow/',
             ),
+            'city'=>array(
+                'class' => 'City',
+                'load' => 'chelny'
+            )
         ),
 
         'params'=>array(
-            'city'       => 'Москва',
-            'has_metro'  => true,
-            'avatar'     => 'moskow',
+            'migration' => 'moscow',
             'forum'      => 2,
             'debug'      => true
         ),

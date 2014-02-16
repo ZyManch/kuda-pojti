@@ -1,48 +1,26 @@
-<div class="form">
+<?php
+/**
+ * @var Work $work
+ * @var CActiveForm $form
+ * @var int $index
+ */
+$timeBegin = $work->time_begin;
+$timeEnd = $work->time_end;
+?>
+<div>
 
-<?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'work-form',
-	'enableAjaxValidation'=>false,
-)); ?>
+    <?php echo $form->hiddenField($work,'['.$index.']id'); ?>
+    <?php echo $form->hiddenField($work,'['.$index.']maps_id'); ?>
 
-	<p class="note">Поля отмеченые знаком <span class="required">*</span> обязательны для заполнения.</p>
+    <?php echo $form->labelEx($work,'['.$index.']day_begin', array('class' => 'label')); ?>
+    <?php echo $form->dropDownList($work,'['.$index.']day_begin',$work->getDayVariants()); ?>
 
-	<?php echo $form->errorSummary($model); ?>
+    <?php echo $form->labelEx($work,'['.$index.']day_end', array('class' => 'label')); ?>
+    <?php echo $form->dropDownList($work,'['.$index.']day_end',$work->getDayVariants()); ?>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'maps_id', array('class' => 'label')); ?>
-		<?php echo $form->textField($model,'maps_id'); ?>
-		<?php echo $form->error($model,'maps_id'); ?>
-	</div>
+    <?php echo $form->labelEx($work,'['.$index.']time_begin', array('class' => 'label')); ?>
+    <?php echo $form->textField($work,'['.$index.']time_begin', array('value' => sprintf('%02d:%02d',$timeBegin/60, $timeBegin % 60),'size' => 5)); ?>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'day_begin', array('class' => 'label')); ?>
-		<?php echo $form->textField($model,'day_begin'); ?>
-		<?php echo $form->error($model,'day_begin'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'day_end', array('class' => 'label')); ?>
-		<?php echo $form->textField($model,'day_end'); ?>
-		<?php echo $form->error($model,'day_end'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'time_begin', array('class' => 'label')); ?>
-		<?php echo $form->textField($model,'time_begin'); ?>
-		<?php echo $form->error($model,'time_begin'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'time_end', array('class' => 'label')); ?>
-		<?php echo $form->textField($model,'time_end'); ?>
-		<?php echo $form->error($model,'time_end'); ?>
-	</div>
-
-	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Создать' : 'Сохранить'); ?>
-	</div>
-
-<?php $this->endWidget(); ?>
-
-</div><!-- form -->
+    <?php echo $form->labelEx($work,'['.$index.']time_end', array('class' => 'label')); ?>
+    <?php echo $form->textField($work,'['.$index.']time_end', array('value' => sprintf('%02d:%02d',$timeEnd/60, $timeEnd % 60),'size' => 5)); ?>
+</div>
