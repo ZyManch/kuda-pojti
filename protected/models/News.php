@@ -9,7 +9,7 @@
  * @property string $content
  * @property integer $changed
  */
-class News extends CActiveRecord
+class News extends ActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
