@@ -1,6 +1,6 @@
 <?php
 
-class m140202_064003_empty_tables extends CDbMigration {
+class CreateTableMigration extends CDbMigration {
 	public function up() {
         $this->createTable('categories', array(
             'id' => 'pk',
