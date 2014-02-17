@@ -8,6 +8,8 @@
 Yii::import('system.cli.commands.MigrateCommand');
 class MigrationCommand extends MigrateCommand {
 
+    public $migrationTable='migration';
+
     public function beforeAction($action,$params) {
         $this->migrationPath='application.migrations.'.Yii::app()->city->folder;
         parent::beforeAction($action, $params);

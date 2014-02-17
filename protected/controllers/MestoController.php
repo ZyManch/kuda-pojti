@@ -50,7 +50,6 @@ class MestoController extends Controller
 	{
 		$model=$this->loadModel($id);
         $this->initAdminMenu($model);
-
 		if(isset($_POST['Mesto']))
 		{
 			if($this->_fillAndSaveModel($model))
@@ -85,6 +84,20 @@ class MestoController extends Controller
         $model->attributes = $attributes;
         if (!$model->save()) {
             return false;
+        }
+        $oldCategories = $model->categories;
+        foreach ($attributes['categories'] as $category) {
+            if (!isset($oldCategories[$category])) {
+                $link = new MestoCats();
+                $link->mesto_id = $model->id;
+                $link->category_id = $category;
+                $link->save();
+            } else {
+                unset($oldCategories[$category]);
+            }
+        }
+        foreach ($oldCategories as $category) {
+            $category->delete();
         }
         $avatar = CUploadedFile::getInstance($model,'avatar');
         if ($avatar) {
