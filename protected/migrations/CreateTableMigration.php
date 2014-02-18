@@ -37,13 +37,11 @@ class CreateTableMigration extends CDbMigration {
         $this->createIndex('company','images','mesto_id');
         $this->createTable('maps', array(
             'id' => 'pk',
-            'yandex_map_id' => 'int(11) DEFAULT NULL',
             'mesto_id' => 'int(11) NOT NULL',
             'info' => 'text COLLATE utf8_bin',
             'city' => 'text COLLATE utf8_bin',
             'structure' => 'enum("Улица","Переулок","Бульвар","Площадь","Проспект","Проезд","Тупик","Шоссе","Набережная","Вал","Парк") COLLATE utf8_bin DEFAULT NULL',
             'adress' => 'text COLLATE utf8_bin',
-            'address' => 'text COLLATE utf8_bin',
             'street' => 'text COLLATE utf8_bin',
             'building' => 'text COLLATE utf8_bin',
             'office' => 'text COLLATE utf8_bin',

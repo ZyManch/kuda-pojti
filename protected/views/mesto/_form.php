@@ -24,7 +24,10 @@
 
     <div class="row">
         <?php echo $form->labelEx($model,'categories', array('class' => 'label')); ?>
-        <?php echo $form->checkBoxList($model,'categories',CHtml::listData(Categories::model()->findAll(),'id','title'),array('size'=>60,'maxlength'=>64, 'separator' => ' ')); ?>
+        <?php foreach (Categories::model()->findAll() as $category):?>
+        <?php echo $form->checkBox($model,'categories[]',array('value' => $category->id, 'checked' => isset($model->categories[$category->id]),'id' => 'category'.$category->id,'uncheckValue' => null)); ?>
+        <?php echo CHtml::label($category->title, 'category'.$category->id);?>
+        <?php endforeach;?>
         <?php echo $form->error($model,'categories'); ?>
     </div>
 

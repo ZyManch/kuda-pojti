@@ -13,6 +13,7 @@
  * @property string $changed
  * @property integer $last_user_id
  * @property ForumsCats $forumCat
+ * @property Topics $topics
  */
 class Forums extends ActiveRecord {
 
@@ -44,7 +45,8 @@ class Forums extends ActiveRecord {
 	public function relations() {
 		return array(
             'forumCat' => array(self::BELONGS_TO, 'ForumsCats', 'parent_id'),
-            'lastUser' => array(self::BELONGS_TO, 'Users', 'last_user_id')
+            'lastUser' => array(self::BELONGS_TO, 'Users', 'last_user_id'),
+            'topics' => array(self::HAS_MANY, 'Topics', 'forum_id')
 		);
 	}
 

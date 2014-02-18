@@ -66,6 +66,9 @@ class Mesto extends ActiveRecord
 		);
 	}
 
+    /**
+     * @return Forums
+     */
     public function getCommentForum(){
         $forum = $this->commentForum;
         if (is_null($forum)) {

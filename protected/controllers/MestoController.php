@@ -85,6 +85,10 @@ class MestoController extends Controller
         if (!$model->save()) {
             return false;
         }
+        $galleryFolder = 'images/gallery/'.Yii::app()->city->folder.'/'.$model->id;
+        if (!file_exists($galleryFolder)) {
+            mkdir($galleryFolder);
+        }
         $oldCategories = $model->categories;
         foreach ($attributes['categories'] as $category) {
             if (!isset($oldCategories[$category])) {
