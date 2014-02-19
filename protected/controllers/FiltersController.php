@@ -74,15 +74,17 @@ class FiltersController extends Controller
 	 */
 	public function actionIndex($id = null)	{
         $this->model = 'Categories';
+        $search = new Filters('search');
+        $search->unsetAttributes();
         if ($id) {
             $categories = $this->loadModel($id);
+            $search->category_id = $categories->id;
             $this->initAdminMenu($categories);
         } else {
             $this->initAdminMenu();
         }
-		$dataProvider=new CActiveDataProvider('Filters');
 		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
+			'dataProvider'=>$search->search(),
 		));
 	}
 

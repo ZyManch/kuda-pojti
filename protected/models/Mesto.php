@@ -16,6 +16,7 @@
  * @property integer $changed
  * @property Categories[] $categories
  * @property Maps[] $maps
+ * @property Menu[] $menu
  */
 class Mesto extends ActiveRecord
 {
@@ -63,6 +64,7 @@ class Mesto extends ActiveRecord
 		    'images'=> array(self::HAS_MANY, 'Images', 'mesto_id'),
             'commentForum' => array(self::BELONGS_TO, 'Forums', 'forum_id'),
             'categories' => array(self::MANY_MANY, 'Categories', 'mesto_cats(mesto_id,category_id)','index' => 'id'),
+            'menu' => array(self::HAS_MANY, 'Menu', 'mesto_id','with' => 'menuCategory','order' => 'menu_category_id DESC'),
 		);
 	}
 
@@ -151,6 +153,16 @@ class Mesto extends ActiveRecord
 
     public function hasPage($page) {
         return in_array($page, explode(',',$this->pages));
+    }
+
+    public function getMenu() {
+        $criteria = new CDbCriteria();
+        $criteria->with = 'menu';
+        $criteria->compare('menu.mesto_id',$this->id);
+        return new CActiveDataProvider('MenuCategory', array(
+            'criteria' => $criteria,
+            'pagination' => false
+        ));
     }
 
     public function getPagesList() {

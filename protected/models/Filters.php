@@ -103,13 +103,15 @@ class Filters extends ActiveRecord
 		// should not be searched.
 
 		$criteria=new CDbCriteria;
-
 		$criteria->compare('id',$this->id);
 		$criteria->compare('title',$this->title,true);
 		$criteria->compare('help',$this->help,true);
-		$criteria->compare('type',$this->type,true);
+		$criteria->compare('type',$this->type);
 		$criteria->compare('params',$this->params,true);
-		$criteria->compare('category_id',$this->category_id);
+        if ($this->category_id) {
+		    $criteria->addCondition('category_id = :category or category_id is null');
+            $criteria->params[':category'] = $this->category_id;
+        }
 		$criteria->compare('key',$this->key,true);
 		$criteria->compare('king',$this->king,true);
 		$criteria->compare('position',$this->position);
