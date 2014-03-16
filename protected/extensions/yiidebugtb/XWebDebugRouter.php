@@ -479,7 +479,6 @@ class XWebDebugRouter extends CLogRoute
 				break;
 			}
 		}
-
 		if(!$allowed) return;
 
 		foreach (explode(',', $this->config) as $value)
