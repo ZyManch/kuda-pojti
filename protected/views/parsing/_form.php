@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var $form CActiveForm
+ * @var $model ParsingData
+ */
+?>
 <div class="form">
 
 <?php $form=$this->beginWidget('CActiveForm', array(
@@ -10,66 +16,60 @@
 	<?php echo $form->errorSummary($model); ?>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'search_text'); ?>
-		<?php echo $form->textField($model,'search_text',array('size'=>60,'maxlength'=>64)); ?>
-		<?php echo $form->error($model,'search_text'); ?>
+		<?php echo $form->labelEx($model,'status', array('class' => 'label')); ?>
+		<?php echo $form->dropDownList($model,'status',array('applied' => 'applied','obtained' => 'obtained')); ?>
+		<?php echo $form->error($model,'status',array('class' => 'errorMessage field')); ?>
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'x'); ?>
+		<?php echo $form->labelEx($model,'x', array('class' => 'label')); ?>
 		<?php echo $form->textField($model,'x',array('size'=>19,'maxlength'=>19)); ?>
-		<?php echo $form->error($model,'x'); ?>
+		<?php echo $form->error($model,'x',array('class' => 'errorMessage field')); ?>
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'y'); ?>
+		<?php echo $form->labelEx($model,'y', array('class' => 'label')); ?>
 		<?php echo $form->textField($model,'y',array('size'=>19,'maxlength'=>19)); ?>
-		<?php echo $form->error($model,'y'); ?>
+		<?php echo $form->error($model,'y',array('class' => 'errorMessage field')); ?>
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'address'); ?>
-		<?php echo $form->textArea($model,'address',array('rows'=>6, 'cols'=>50)); ?>
-		<?php echo $form->error($model,'address'); ?>
+		<?php echo $form->labelEx($model,'address', array('class' => 'label')); ?>
+		<?php echo $form->textArea($model,'address',array('rows'=>6, 'cols'=>50, 'class'=>'redactor_box')); ?>
+		<?php echo $form->error($model,'address',array('class' => 'errorMessage field')); ?>
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'categories'); ?>
-		<?php echo $form->textArea($model,'categories',array('rows'=>6, 'cols'=>50)); ?>
-		<?php echo $form->error($model,'categories'); ?>
+		<?php echo $form->labelEx($model,'categories', array('class' => 'label')); ?>
+		<?php echo $form->textField($model,'categories',array('rows'=>6, 'cols'=>50, 'class'=>'redactor_box')); ?>
+		<?php echo $form->error($model,'categories',array('class' => 'errorMessage field')); ?>
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'work'); ?>
-		<?php echo $form->textArea($model,'work',array('rows'=>6, 'cols'=>50)); ?>
-		<?php echo $form->error($model,'work'); ?>
+		<?php echo $form->labelEx($model,'work', array('class' => 'label')); ?>
+		<?php echo $form->textArea($model,'work',array('rows'=>6, 'cols'=>50, 'class'=>'redactor_box')); ?>
+		<?php echo $form->error($model,'work',array('class' => 'errorMessage field')); ?>
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'phones'); ?>
-		<?php echo $form->textArea($model,'phones',array('rows'=>6, 'cols'=>50)); ?>
-		<?php echo $form->error($model,'phones'); ?>
+		<?php echo $form->labelEx($model,'phones', array('class' => 'label')); ?>
+		<?php echo $form->textField($model,'phones',array('rows'=>6, 'cols'=>50, 'class'=>'redactor_box')); ?>
+		<?php echo $form->error($model,'phones',array('class' => 'errorMessage field')); ?>
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'name'); ?>
-		<?php echo $form->textField($model,'name',array('size'=>60,'maxlength'=>128)); ?>
-		<?php echo $form->error($model,'name'); ?>
+		<?php echo $form->labelEx($model,'name', array('class' => 'label')); ?>
+		<?php echo $form->textField($model,'name',array('size'=>60,'maxlength'=>128, 'class'=>'redactor_box')); ?>
+		<?php echo $form->error($model,'name',array('class' => 'errorMessage field')); ?>
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'url'); ?>
-		<?php echo $form->textField($model,'url'); ?>
-		<?php echo $form->error($model,'url'); ?>
+		<?php echo $form->labelEx($model,'filters', array('class' => 'label')); ?>
+		<?php echo $form->textArea($model,'filters',array('rows'=>6, 'cols'=>50, 'class'=>'redactor_box')); ?>
+		<?php echo $form->error($model,'filters',array('class' => 'errorMessage field')); ?>
 	</div>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'filters'); ?>
-		<?php echo $form->textArea($model,'filters',array('rows'=>6, 'cols'=>50)); ?>
-		<?php echo $form->error($model,'filters'); ?>
-	</div>
-
-	<div class="row buttons">
+	<div class="row buttons field">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Создать' : 'Сохранить'); ?>
 	</div>
 

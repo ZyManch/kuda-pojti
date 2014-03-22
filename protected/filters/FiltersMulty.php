@@ -1,5 +1,6 @@
 <?php
 class FiltersMulty extends Filters {
+
 	public function applyFilter(CDbCriteria &$condition, $values) {
 	    foreach ($values as &$item) {
 	        $item = Yii::app()->db->getPdoInstance()->quote($item);

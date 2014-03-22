@@ -8,6 +8,13 @@ class FiltersController extends Controller
 	 */
 	public $model = 'Filters';
 
+
+    public function accessRules() {
+        $result = parent::accessRules();
+        $result[1]['actions'][] = 'apply';
+        return $result;
+    }
+
 	/**
 	 * @return array action filters
 	 */
@@ -23,9 +30,12 @@ class FiltersController extends Controller
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
-	public function actionCreate($id = null)
-	{
+	public function actionCreate($id = null, $title = null, $back = null) {
 		$model=new Filters;
+        if ($title) {
+            $model->title = $title;
+            $model->king = 'type';
+        }
         $this->model = 'Categories';
         if ($id) {
             $categories = $this->loadModel($id);
@@ -38,14 +48,34 @@ class FiltersController extends Controller
         $attributes = $this->_getFilterParam($model);
         if ($attributes) {
             $model->attributes=$attributes;
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+			if($model->save()) {
+                if ($back) {
+                    $this->redirect(str_replace('_','/', $back));
+                } else {
+                    $this->redirect(array('view','id'=>$model->id));
+                }
+            }
 		}
 
 		$this->render('create',array(
 			'model'=>$model,
 		));
 	}
+
+    public function actionApply($title, $back, $filter_id = null, $key = null) {
+        $categories = Categories::model()->with('typeFilter')->findAll();
+        if ($filter_id) {
+            /** @var FiltersMulty $filter */
+            $filter = FiltersMulty::model()->findByPk($filter_id);
+            $filter->params.="\n".$key.'='.$title;
+            $filter->save();
+            $this->redirect(str_replace('_','/', $back));
+        }
+        $this->render('apply',array(
+            'categories' => $categories,
+            'title' => $title
+        ));
+    }
 
 	/**
 	 * Updates a particular model.

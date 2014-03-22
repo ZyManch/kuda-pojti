@@ -596,3 +596,20 @@ table{
     margin: 4px;
     padding: 5px;
 }
+.grid-view table{
+    border-width: 0px;
+}
+.grid-view th{
+    background: #ffbd72 !important;
+    color: #562d2a !important;
+    padding: 5px !important;
+}
+.grid-view th a,.grid-view th a:visited{
+    color: #562d2a !important;
+}
+.grid-view tr.error td{
+    background-color: #eec9b6;
+}
+.grid-view tr.success td{
+    background-color: #e8ffdb;
+}

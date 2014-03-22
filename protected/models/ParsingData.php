@@ -5,7 +5,7 @@
  *
  * У таблицы 'parsing_data' следующие поля:
  * @property string $parsing_data_id
- * @property string $search_text
+ * @property string $status
  * @property string $x
  * @property string $y
  * @property string $address
@@ -13,7 +13,7 @@
  * @property string $work
  * @property string $phones
  * @property string $name
- * @property integer $url
+ * @property integer $city
  * @property string $filters
  */
 class ParsingData extends ActiveRecord {
@@ -30,12 +30,14 @@ class ParsingData extends ActiveRecord {
 	 */
 	public function rules() {
 		return array(
-			array('search_text, x, y, address, categories, work, phones, name, url, filters', 'required'),
-			array('url', 'numerical', 'integerOnly'=>true),
-			array('search_text', 'length', 'max'=>64),
-			array('x, y', 'length', 'max'=>19),
+			array('x, y, address, categories, name', 'required'),
+			array('address', 'checkCity'),
+			array('categories', 'checkCategories'),
+			array('status', 'length', 'max'=>12),
+			array('x, y', 'numerical', 'min' => 50,'max'=>60),
 			array('name', 'length', 'max'=>128),
-			array('parsing_data_id, search_text, x, y, address, categories, work, phones, name, url, filters', 'safe', 'on'=>'search'),
+			array('city', 'length', 'max'=>128),
+			array('parsing_data_id, status, x, y, address, categories, work, phones, name, city, filters', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -47,13 +49,42 @@ class ParsingData extends ActiveRecord {
 		);
 	}
 
+    public function checkCity($attribute,$params) {
+        if (strpos($this->$attribute,Yii::app()->city->title)===false) {
+            $this->addError($attribute, 'Другой город');
+        }
+    }
+
+    public function checkCategories($attribute,$params) {
+        $invalidCategories = array();
+        foreach (explode(',',$this->$attribute) as $title) {
+            $filter = Filters::model()->findBySql(
+                 sprintf(
+                     'SELECT * FROM filters WHERE king="type" and params like CONCAT("%%=",LOWER("%s"),"%%")',
+                     $title
+                 )
+            );
+            if (!$filter) {
+                $invalidCategories[] = $title;
+            }
+        }
+        if ($invalidCategories) {
+            $links = array();
+            foreach ($invalidCategories as $invalidCategory) {
+                $links[] = CHtml::link($invalidCategory,array('filters/apply','title' => strtolower($invalidCategory),'back' => str_replace('/','_',Yii::app()->request->requestUri)));
+            }
+            $errors = 'Фильтр "'.implode(',',$invalidCategories).'" не найден. Добавить '.implode(', ', $links);
+            $this->addError($attribute, $errors);
+        }
+    }
+
 	/**
 	 * @return array название полей
 	 */
 	public function attributeLabels() {
 		return array(
 			'parsing_data_id' => 'Parsing Data',
-			'search_text' => 'Search Text',
+			'status' => 'Status',
 			'x' => 'X',
 			'y' => 'Y',
 			'address' => 'Address',
@@ -61,7 +92,7 @@ class ParsingData extends ActiveRecord {
 			'work' => 'Work',
 			'phones' => 'Phones',
 			'name' => 'Name',
-			'url' => 'Url',
+			'city' => 'city',
 			'filters' => 'Filters',
 		);
 	}
@@ -77,7 +108,7 @@ class ParsingData extends ActiveRecord {
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('parsing_data_id',$this->parsing_data_id,true);
-		$criteria->compare('search_text',$this->search_text,true);
+		$criteria->compare('status',$this->status,true);
 		$criteria->compare('x',$this->x,true);
 		$criteria->compare('y',$this->y,true);
 		$criteria->compare('address',$this->address,true);
@@ -85,11 +116,12 @@ class ParsingData extends ActiveRecord {
 		$criteria->compare('work',$this->work,true);
 		$criteria->compare('phones',$this->phones,true);
 		$criteria->compare('name',$this->name,true);
-		$criteria->compare('url',$this->url);
+		$criteria->compare('city',$this->city);
 		$criteria->compare('filters',$this->filters,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
+            'pagination' => array('pageSize' => 100)
 		));
 	}
 }

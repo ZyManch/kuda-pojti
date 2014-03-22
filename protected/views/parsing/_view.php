@@ -4,8 +4,8 @@
 	<?php echo CHtml::link(CHtml::encode($data->parsing_data_id), array('view', 'id'=>$data->parsing_data_id)); ?>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('search_text')); ?>:</b>
-	<?php echo CHtml::encode($data->search_text); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('status')); ?>:</b>
+	<?php echo CHtml::encode($data->status); ?>
 	<br />
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('x')); ?>:</b>
@@ -37,8 +37,8 @@
 	<?php echo CHtml::encode($data->name); ?>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('url')); ?>:</b>
-	<?php echo CHtml::encode($data->url); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('city')); ?>:</b>
+	<?php echo CHtml::encode($data->city); ?>
 	<br />
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('filters')); ?>:</b>

@@ -3,20 +3,30 @@
 	'id'=>'parsing-data-grid',
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
+    'selectionChanged' => 'function(id){ location.href = "'.$this->createUrl('parsing/update', array('id' => '')).'"+$.fn.yiiGridView.getSelection(id);}',
+    'rowCssClassExpression' => function ($index, $data) {
+            $data->validate();
+            return $data->hasErrors() ? "error" : "success";
+    },
 	'columns'=>array(
 		'parsing_data_id',
-		'search_text',
+        'name',
 		'x',
 		'y',
 		'address',
 		'categories',
-		/*
-		'work',
-		'phones',
-		'name',
-		'url',
-		'filters',
-		*/
+        array(
+            'header' => 'Errors',
+            'type' => 'raw',
+            'value' => function($data) {
+                /** @var $data ParsingData */
+                $result = array();
+                foreach ($data->getErrors() as $value) {
+                    $result[] = implode('. ', $value);
+                }
+                return implode('. ', $result);
+            }
+        ),
 		array(
 			'class'=>'CButtonColumn',
 		),

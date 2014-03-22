@@ -12,7 +12,7 @@
  * @property string $avatar
  * @property integer $position
  * @property integer $changed
- * @property Filters $typeFilter
+ * @property FiltersMulty $typeFilter
  */
 class Categories extends ActiveRecord
 {

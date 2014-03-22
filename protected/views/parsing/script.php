@@ -8,7 +8,7 @@
 ?>
 $(document).ready(function() {
     $(document).bind('ajaxComplete', function(e,data) {
-        if (data.responseText.substr(0,1) == '{') {
+        if (typeof data.responseText != 'undefined' && data.responseText.substr(0,1) == '{') {
             var json = JSON.parse(data.responseText),
                 items = [];
             if (json && typeof json.vpage != 'undefined') {
