@@ -18,7 +18,7 @@ class ParsingController extends Controller {
             ),
             array('allow',
                 'actions'=>array('download','admin','userscript','script',
-                    'delete','create','update'),
+                    'delete','create','update','parse'),
                 'roles'=>array('moderator'),
             ),
             array('deny',  // deny all users
@@ -79,7 +79,7 @@ class ParsingController extends Controller {
             }
             $parsing->phones = implode(',',$phones);
             $parsing->name = $item['properties']['name'];
-            $parsing->url = isset($metadata['url']) ? $metadata['url'] : '';
+            $parsing->site = isset($metadata['url']) ? $metadata['url'] : '';
             $parsing->filters = isset($metadata['Features']) ? json_encode($metadata['Features']) : null;
             $parsing->save(false);
         }
@@ -113,7 +113,7 @@ class ParsingController extends Controller {
         $model=$this->loadModel($id);
         $model->validate();
         $this->setPageTitle('Редактирование '.$model->name,false);
-        $this->initAdminMenu();
+        $this->initAdminMenu($model);
 
         if (isset($_POST['ParsingData'])) {
             $model->attributes = $_POST['ParsingData'];
@@ -144,6 +144,21 @@ class ParsingController extends Controller {
         }
     }
 
+    public function actionParse($limit = 1, $id = null) {
+        $criteria = new CDbCriteria();
+        $criteria->limit = $limit;
+        $criteria->order = 'id asc';
+        if ($id) {
+            $criteria->compare('id', $id);
+        }
+        $list = ParsingData::model()->findAll($criteria);
+        foreach ($list as $parsingData) {
+            /** @var ParsingData $parsingData */
+            $parsingData->parse();
+        }
+        $this->redirect(array('admin'));
+    }
+
 
     /**
      * Администрирование.
@@ -167,12 +182,11 @@ class ParsingController extends Controller {
         $this->adminMenu['script'] = array('label'=>'Скрипт', 'url'=>array('script'),'image' => 'view');
         $this->adminMenu['create'] = array('label'=>'Добавить', 'url'=>array('create'),'image' => 'add');
         $this->adminMenu['admin'] = array('label'=>'Список', 'url'=>array('admin'),'image' => 'list');
+        $this->adminMenu['parse'] = array('label'=>'Обработать', 'url'=>array('parse'),'image' => 'add');
         if (!is_null($model)) {
-            $this->adminMenu['view'] = array('label'=>'Просмотр', 'url'=>array('view', 'id'=>$model->url),'image' => 'view');
-            $this->adminMenu['update'] = array('label'=>'Редактировать', 'url'=>array('update', 'id'=>$model->url),'image' => 'update');
-            $this->adminMenu['delete'] = array('label'=>'Удалить', 'url'=>array('delete','id'=>$model->url),'image' => 'delete');
-            $this->adminMenu['mesto'] = array('label' => 'Добавить место', 'url' => array('mesto/create','category_id' => $model->id),'image' => 'add');
-            $this->adminMenu['filters'] = array('label' => 'Фильтры', 'url' => array('filters/index','id' => $model->url),'image' => 'list');
+            $this->adminMenu['parse']['url']['id']=$model->id;
+            $this->adminMenu['update'] = array('label'=>'Редактировать', 'url'=>array('update', 'id'=>$model->id),'image' => 'update');
+            $this->adminMenu['delete'] = array('label'=>'Удалить', 'url'=>array('delete','id'=>$model->id),'image' => 'delete');
         }
     }
 

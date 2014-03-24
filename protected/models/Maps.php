@@ -8,6 +8,12 @@
  * @property integer $mesto_id
  * @property string $adress
  * @property string $phones
+ * @property string $city_id
+ * @property City $city
+ * @property string $structure
+ * @property string $street
+ * @property string $building
+ * @property string $office
  * @property double $map_x
  * @property double $map_y
  * @property Work[] $work
@@ -26,8 +32,8 @@ class Maps extends ActiveRecord {
 	 */
 	public function rules() {
 		return array(
-			array('mesto_id, city,structure, adress, map_x, map_y', 'required'),
-            array('city,info,adress,structure, 	street,building, phones, office,','safe'),
+			array('mesto_id, city_id,structure, adress, map_x, map_y', 'required'),
+            array('city_id,info,adress,structure, 	street,building, phones, office,','safe'),
 			array('mesto_id', 'numerical', 'integerOnly'=>true),
 			array('map_x, map_y', 'numerical'),
 			array('id, mesto_id, adress, phones, map_x, map_y', 'safe', 'on'=>'search'),
@@ -50,6 +56,7 @@ class Maps extends ActiveRecord {
 			'metro' => array(self::MANY_MANY, 'Metro', 'maps_metro(maps_id, metro_id)'),
 		    'work'  => array(self::HAS_MANY, 'Work', 'maps_id','index' => 'id'),
 		    'mesto'  => array(self::BELONGS_TO, 'Mesto', 'mesto_id'),
+		    'city'  => array(self::BELONGS_TO, 'City', 'city_id'),
 		);
 	}
 
@@ -60,7 +67,7 @@ class Maps extends ActiveRecord {
 		return array(
 			'id' => 'ID',
 			'mesto_id' => 'Заведение',
-			'city' => 'Город',
+			'city_id' => 'Город',
 			'structure' => 'Тип',
 			'adress' => 'Название улицы',
 			'street' => 'Дом пол улице',
@@ -86,6 +93,18 @@ class Maps extends ActiveRecord {
             'Вал' => 'Вал',
             'Парк' => 'Парк'
         );
+    }
+
+    public function findIdentical() {
+        $criteria = new CDbCriteria();
+        $criteria->compare('mesto_id',$this->mesto_id);
+        $criteria->compare('adress',$this->adress);
+        $criteria->compare('street',$this->street);
+        if ($this->id) {
+            $criteria->addCondition('id <> :id');
+            $criteria->params[':id'] = $this->id;
+        }
+        return Maps::model()->find($criteria);
     }
 
 	/**

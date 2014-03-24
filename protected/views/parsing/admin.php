@@ -9,7 +9,7 @@
             return $data->hasErrors() ? "error" : "success";
     },
 	'columns'=>array(
-		'parsing_data_id',
+		'id',
         'name',
 		'x',
 		'y',
@@ -29,6 +29,7 @@
         ),
 		array(
 			'class'=>'CButtonColumn',
+            'template'=>'{update} {delete}'
 		),
 	),
 )); ?>

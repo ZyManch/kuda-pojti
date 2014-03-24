@@ -9,6 +9,7 @@
  * @property string $title
  * @property string $folder
  * @property string $has_metro
+ * @property int $parent_city_id
  * @property string $changed
  */
 class City extends ActiveRecord {
@@ -37,10 +38,11 @@ class City extends ActiveRecord {
 	 */
 	public function rules() {
 		return array(
-			array('url, title, folder, changed', 'required'),
+			array('title', 'required'),
 			array('url, title, folder', 'length', 'max'=>32),
 			array('has_metro', 'length', 'max'=>3),
-			array('id, url, title, folder, has_metro, changed', 'safe', 'on'=>'search'),
+			array('parent_city_id', 'numerical', 'integerOnly'=>true),
+			array('id, url, title, folder, has_metro, parent_city_id, changed', 'safe', 'on'=>'search'),
 		);
 	}
 
