@@ -25,7 +25,7 @@ return array(
             'showScriptName'=>false,
             'rules'=>array(
                 array(
-                    //'class' => 'application.components.UrlRule',
+                    'class' => 'application.components.UrlRule',
                 )
             ),
         ),
