@@ -70,6 +70,12 @@ Yii::app()->clientScript->registerScript(
 		<?php echo $form->error($model,'category_id'); ?>
 	</div>
 
+    <div class="row">
+        <?php echo $form->labelEx($model,'key', array('class' => 'label')); ?>
+        <?php echo $form->textField($model,'key',array()); ?>
+        <?php echo $form->error($model,'key'); ?>
+    </div>
+
 	<div class="row">
 		<?php echo $form->labelEx($model,'king', array('class' => 'label')); ?>
 		<?php echo $form->dropDownList($model,'king',$model->getKingVariants()); ?>

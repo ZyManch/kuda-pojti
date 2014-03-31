@@ -18,7 +18,7 @@ class ParsingController extends Controller {
             ),
             array('allow',
                 'actions'=>array('download','admin','userscript','script',
-                    'delete','create','update','parse'),
+                    'delete','create','update','parse','skip'),
                 'roles'=>array('moderator'),
             ),
             array('deny',  // deny all users
@@ -146,16 +146,36 @@ class ParsingController extends Controller {
 
     public function actionParse($limit = 1, $id = null) {
         $criteria = new CDbCriteria();
-        $criteria->limit = $limit;
+        $criteria->compare('status','obtained');
+        $criteria->addCondition('id > :id_from');
+        $criteria->params[':id_from'] = 0;
         $criteria->order = 'id asc';
         if ($id) {
             $criteria->compare('id', $id);
         }
-        $list = ParsingData::model()->findAll($criteria);
-        foreach ($list as $parsingData) {
-            /** @var ParsingData $parsingData */
-            $parsingData->parse();
+
+        $index = 0;
+        while ($index < $limit) {
+            /** @var ParsingData $model */
+            $model = ParsingData::model()->find($criteria);
+            if (!$model) {
+                break;
+            }
+            $criteria->params[':id_from'] = $model->id;
+            if (!$model->validate()) {
+                continue;
+            }
+            $model->parse();
+            $index++;
         }
+
+        $this->redirect(array('admin'));
+    }
+
+    public function actionSkip($filter) {
+        $skip = new FiltersSkiped();
+        $skip->key = $filter;
+        $skip->save(false);
         $this->redirect(array('admin'));
     }
 

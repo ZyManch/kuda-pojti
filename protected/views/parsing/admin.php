@@ -22,7 +22,7 @@
                 /** @var $data ParsingData */
                 $result = array();
                 foreach ($data->getErrors() as $value) {
-                    $result[] = implode('. ', $value);
+                    $result[] = implode('. <br>', $value);
                 }
                 return implode('. ', $result);
             }

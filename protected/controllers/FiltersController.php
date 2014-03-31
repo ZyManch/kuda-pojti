@@ -30,11 +30,15 @@ class FiltersController extends Controller
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
-	public function actionCreate($id = null, $title = null, $back = null) {
+	public function actionCreate($id = null, $title = null, $key = null, $back = null) {
 		$model=new Filters;
         if ($title) {
             $model->title = $title;
             $model->king = 'type';
+        }
+        if ($key) {
+            $model->key = $key;
+            $model->king = 'lower';
         }
         $this->model = 'Categories';
         if ($id) {

@@ -13,6 +13,7 @@
  * @property string $key
  * @property string $king
  * @property integer $position
+ * @property Categories $category
  */
 class Filters extends ActiveRecord
 {

@@ -33,6 +33,7 @@ class ParsingData extends ActiveRecord {
 			array('x, y, address, categories, name', 'required'),
 			array('address', 'checkAddress'),
 			array('categories', 'checkCategories'),
+			array('filters', 'checkFilters'),
 			array('status', 'length', 'max'=>12),
 			array('id', 'numerical'),
 			array('x, y', 'numerical', 'min' => 50,'max'=>60),
@@ -49,6 +50,128 @@ class ParsingData extends ActiveRecord {
 		return array(
 		);
 	}
+
+    public function checkFilters($attribute,$params) {
+        foreach ($this->getFilters() as $name => $filterParam) {
+            $values = $filterParam['value'];
+            /** @var Filters $filter */
+            $filter = $filterParam['filter'];
+            if ($filter->getIsNewRecord()) {
+                $skipped = FiltersSkiped::model()->findByAttributes(array('key'=>$name));
+                if (!$skipped) {
+                    /** @var FiltersMulty $categoryFilter */
+                    $categoryFilters = array_filter($this->getCategoryFilters());
+                    $categoryFilter = array_shift($categoryFilters);
+                    $this->addError(
+                        $attribute,
+                        'Фильтр "'.CHtml::link(
+                            $filter->title,
+                            array(
+                                'filters/create',
+                                'id' => $categoryFilter->category->url,
+                                'title'=>$filter->title,
+                                'key' => $filter->key,
+                                'type' => $filter->type
+                            )
+                        ).'" не найден '.
+                        '['.CHtml::link('пропустить',array('skip','filter' => $name)).']'
+                    );
+                }
+                continue;
+            }
+            $values = $filterParam['value'];
+            if ($filter instanceof FiltersMulty) {
+                $validValues = $filter->extractParams();
+                if (!is_array($values)) {
+                    $values = array($values);
+                }
+                foreach ($values as $value) {
+                    if (!in_array($value,$validValues)) {
+                        $this->addError(
+                             $attribute,
+                             'Значение фильтра "'.$value.'" не поддержено в фильтре Multy '.$filter->id
+                        );
+                    }
+                }
+            } else if($filter instanceof FiltersBool) {
+                if (!in_array($values, array(true,false),1)) {
+                    $this->addError(
+                         $attribute,
+                         'Значение фильтра '.var_export($values,1).' не поддержано в фильтре Bool '.$filter->id
+                    );
+                }
+            } else if($filter instanceof FiltersMetro) {
+                $this->addError(
+                     $attribute,
+                     'Фильтр Metro не поддерживается'
+                );
+            } else if($filter instanceof FiltersRadio) {
+
+            } else if($filter instanceof FiltersRangeIn) {
+                if (!strpos($values,'-')) {
+                    $this->addError(
+                         $attribute,
+                         'Фильтр RangeIn не поддерживается'
+                    );
+                }
+            } else if($filter instanceof FiltersRangeOut) {
+                $this->addError(
+                     $attribute,
+                     'Фильтр RangeIn не поддерживается'
+                );
+            } else if($filter instanceof FiltersWork) {
+                $this->addError(
+                     $attribute,
+                     'Фильтр Work не поддерживается'
+                );
+            } else {
+                $this->addError(
+                     $attribute,
+                     'Неизвестный класс фильтра :'.get_class($filter)
+                );
+            }
+        }
+    }
+
+    public function getFilters() {
+        if (!$this->filters) {
+            return array();
+        }
+        $json = json_decode($this->filters,1);
+        $result = array();
+        foreach ($json as $filterParam) {
+            $filter = Filters::model()->findByAttributes(array(
+                'key' => $filterParam['id']
+            ));
+            if (!$filter) {
+                switch ($filterParam['type']) {
+                    case 'enum':
+                        $filter = new FiltersMulty();
+                        $filter->type = 'Multy';
+                        break;
+                    case 'text':
+                        $filter = new FiltersRadio();
+                        $filter->type = 'Radio';
+                        break;
+                    case 'bool':
+                        $filter = new FiltersBool();
+                        $filter->type = 'Bool';
+                        break;
+                    default:
+                        $filter = new Filters();
+                }
+
+                $filter->key = $filterParam['id'];
+                $filter->title = $filterParam['name'];
+            }
+            $result[$filterParam['id']] = array(
+                'filter' => $filter,
+                'value' => isset($filterParam['value']) ?
+                        $filterParam['value'] : $filterParam['values']
+            );
+        }
+        return $result;
+    }
 
     public function checkAddress($attribute,$params) {
         $map = $this->parseAddress();
@@ -71,7 +194,7 @@ class ParsingData extends ActiveRecord {
 
     public function checkCategories($attribute,$params) {
         $invalidCategories = array();
-        foreach ($this->getFilters() as $title => $filter) {
+        foreach ($this->getCategoryFilters() as $title => $filter) {
             if (!$filter) {
                 $invalidCategories[] = $title;
             }
@@ -89,7 +212,7 @@ class ParsingData extends ActiveRecord {
     /**
      * @return FiltersMulty[]
      */
-    public function getFilters() {
+    public function getCategoryFilters() {
         $result = array();
         foreach (explode(',',$this->categories) as $title) {
             $result[$title] = Filters::model()->findBySql(
@@ -125,14 +248,20 @@ class ParsingData extends ActiveRecord {
             }
             $mesto->pages = implode(',',$pages);
             $mesto->save(false);
-            $filters = $this->getFilters();
+            $filters = $this->getCategoryFilters();
             foreach ($filters as $title => $filter) {
                 if ($filter) {
                     $mestoFilter = new MestoFilters();
                     $mestoFilter->mesto_id = $mesto->id;
                     $mestoFilter->filter_id = $filter->id;
-                    $params = array_map('strtolower', $filter->extractParams());
-                    $mestoFilter->value = array_search($title, $params);
+
+                    $params = array_map(
+                        function($field) {
+                            return mb_strtolower($field,'UTF-8');
+                        },
+                        $filter->extractParams()
+                    );
+                    $mestoFilter->value = array_search(mb_strtolower($title,'UTF-8'), $params);
                     $mestoFilter->save(false);
                     $mestoCats = new MestoCats();
                     $mestoCats->mesto_id = $mesto->id;
@@ -150,39 +279,62 @@ class ParsingData extends ActiveRecord {
                 $week = array(1 => 'Monday',2 => 'Tuesday',3 => 'Wednesday',4 => 'Thursday',
                     5 => 'Friday', 6 => 'Saturday',7 => 'Sunday');
                 foreach ($json['Availabilities'] as $workParams) {
-                    $fromParts = explode(':',$workParams['from']);
-                    $toParts = explode(':',$workParams['to']);
-                    $from = $fromParts[0]*60 + $fromParts[1];
-                    $to = $toParts[0]*60 + $toParts[1];
+                    $days  = array();
                     if (isset($workParams['Everyday'])) {
-                        $work = new Work();
-                        $work->maps_id = $map->id;
-                        $work->day_begin = 1;
-                        $work->day_end = 7;
-                        $work->time_begin = $from;
-                        $work->time_end = $to;
-                        $work->save(false);
+                        $days[] = array(1,7);
                     } else {
-                        foreach ($workParams['Intervals'] as $time) {
-                            $work = null;
-                            foreach ($week as $dayIndex => $day) {
-                                if (!$work && isset($time[$day])) {
+                        $dayBegin = null;
+                        foreach ($week as $dayIndex => $day) {
+                            if (!$dayBegin && isset($workParams[$day]) && $workParams[$day]) {
+                                $dayBegin = $dayIndex;
+                            } else if ($dayBegin && (!isset($workParams[$day]) || !$workParams[$day])) {
+                                $days[] = array($dayBegin, $dayIndex-1);
+                                $dayBegin = null;
+                            }
+                        }
+                        if ($dayBegin) {
+                            $days[] = array($dayBegin, 7);
+                        }
+                    }
+                    foreach ($workParams['Intervals'] as $time) {
+                        $fromParts = explode(':',$time['from']);
+                        $toParts = explode(':',$time['to']);
+                        $from = $fromParts[0]*60 + $fromParts[1];
+                        $to = $toParts[0]*60 + $toParts[1];
+                        if ($to == 0) {
+                            $to = 24 * 60;
+                        } else if ($to < $from) {
+                            foreach ($days as $interval) {
+                                if ($interval[0] == 7) {
                                     $work = new Work();
                                     $work->maps_id = $map->id;
-                                    $work->day_begin = $dayIndex;
-                                } else if ($work && !isset($time[$day])) {
-                                    $work->day_end = $dayIndex - 1;
-                                    $work->time_begin = $from;
+                                    $work->day_begin = $interval[0] + 1;
+                                    $work->day_end = min(7,$interval[1] + 1);
+                                    $work->time_begin = 0;
+                                    $work->time_end = $to;
+                                    $work->save(false);
+                                }
+                                if ($interval[1] == 7) {
+                                    $work = new Work();
+                                    $work->maps_id = $map->id;
+                                    $work->day_begin = 1;
+                                    $work->day_end = 1;
+                                    $work->time_begin = 0;
                                     $work->time_end = $to;
                                     $work->save(false);
                                 }
                             }
-                            if ($work) {
-                                $work->day_end = 7;
-                                $work->time_begin = $from;
-                                $work->time_end = $to;
-                                $work->save(false);
-                            }
+                            $to = 24 * 60;
+                        }
+                        foreach ($days as $interval) {
+                            $work = new Work();
+                            $work->maps_id = $map->id;
+                            $work->day_begin = $interval[0];
+                            $work->day_end = $interval[1];
+                            $work->time_begin = $from;
+                            $work->time_end = $to;
+                            $work->save(false);
+                            $work = null;
                         }
                     }
                 }
@@ -199,6 +351,9 @@ class ParsingData extends ActiveRecord {
      */
     public function parseAddress() {
         $result = new Maps();
+        $result->map_x = $this->x;
+        $result->map_y = $this->y;
+        $result->phones = preg_replace('#([^\+0-9,]+)#','',$this->phones);
         $isStreet = false;
         foreach (explode(',',$this->address) as $address) {
             $address = ' '.trim($address).' ';
@@ -243,6 +398,7 @@ class ParsingData extends ActiveRecord {
                 'Тракт' => array(),
                 'Комплекс' => array()
             );
+            $isContinue = false;
             foreach ($structures as $structure => $texts) {
                 $texts[] = mb_strtolower($structure, 'UTF-8');
                 $lowerAddress = mb_strtolower($address,'UTF-8');
@@ -254,17 +410,20 @@ class ParsingData extends ActiveRecord {
                         if ($text == 'комплекс') {
                             $result->street = trim($address,' .');
                         } else {
-                            $result->adress = trim(str_ireplace(
+                            $result->adress = trim(str_replace(
                                 array(' '.$text.' ',' '.$text.'.'),
                                 '',
                                 $address
                             ),' .');
                             $isStreet = true;
                         }
-
+                        $isContinue = true;
                         continue;
                     }
                 }
+            }
+            if ($isContinue) {
+                continue;
             }
             if ($isStreet) {
                 $result->street = trim($address,' .');
