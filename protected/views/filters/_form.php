@@ -5,7 +5,7 @@
  */
 Yii::app()->clientScript->registerScript(
     'change-type',
-    '$("#FiltersMulty_type").change(function() {
+    '$("#'.get_class($model).'_type").change(function() {
         var options = '.json_encode($model->getFormatsOfParam()).';
         $(".params").hide();
         $("#"+options[$(this).val()]).show();
@@ -57,7 +57,7 @@ Yii::app()->clientScript->registerScript(
             <?php echo CHtml::button('Добавить', array('onclick' => '$($("#blank").html()).insertBefore(this)'));?>
         </div>
         <div class="field params" id="range"<?php if($model->getFormatOfParam() != 'range'):?> style="display: none"<?php endif;?>>
-            <?php $this->renderpartial('update/Range',array('form' => $form, 'model' => $model));?>
+            <?php $this->renderpartial('update/Range',array('form' => $form, 'model' => $model,'value' => $model->params));?>
         </div>
         <div class="field params" id="empty"<?php if($model->getFormatOfParam() != 'empty'):?> style="display: none"<?php endif;?>>
             <?php $this->renderpartial('update/Empty',array('form' => $form, 'model' => $model));?>

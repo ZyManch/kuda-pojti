@@ -71,7 +71,9 @@ class ParsingData extends ActiveRecord {
                                 'id' => $categoryFilter->category->url,
                                 'title'=>$filter->title,
                                 'key' => $filter->key,
-                                'type' => $filter->type
+                                'type' => $filter->type,
+                                'value' => is_array($values) ? implode(';',$values) : $values,
+                                'back' => str_replace('/','_', Yii::app()->request->requestUri)
                             )
                         ).'" не найден '.
                         '['.CHtml::link('пропустить',array('skip','filter' => $name)).']'
@@ -108,11 +110,13 @@ class ParsingData extends ActiveRecord {
             } else if($filter instanceof FiltersRadio) {
 
             } else if($filter instanceof FiltersRangeIn) {
-                if (!strpos($values,'-')) {
-                    $this->addError(
-                         $attribute,
-                         'Фильтр RangeIn не поддерживается'
-                    );
+                foreach (is_array($values) ? $values : array($values) as $value) {
+                    if (!strpos($value,'-') && !strpos($value,'–')) {
+                        $this->addError(
+                             $attribute,
+                             'Фильтр RangeIn не поддерживается'
+                        );
+                    }
                 }
             } else if($filter instanceof FiltersRangeOut) {
                 $this->addError(
@@ -143,15 +147,28 @@ class ParsingData extends ActiveRecord {
             $filter = Filters::model()->findByAttributes(array(
                 'key' => $filterParam['id']
             ));
+            $values = isset($filterParam['value']) ?
+                $filterParam['value'] : $filterParam['values'];
             if (!$filter) {
+                $firstValue = is_array($values) ? reset($values) : $values;
                 switch ($filterParam['type']) {
                     case 'enum':
-                        $filter = new FiltersMulty();
-                        $filter->type = 'Multy';
+                        if (mb_strpos($firstValue,'-')!=false || mb_strpos($firstValue,'–')!=false) {
+                            $filter = new FiltersRangeOut();
+                            $filter->type = 'RangeIn';
+                        } else {
+                            $filter = new FiltersMulty();
+                            $filter->type = 'Multy';
+                        }
                         break;
                     case 'text':
-                        $filter = new FiltersRadio();
-                        $filter->type = 'Radio';
+                        if (mb_strpos($firstValue,'-')!=false || mb_strpos($firstValue,'–')!=false) {
+                            $filter = new FiltersRangeOut();
+                            $filter->type = 'RangeIn';
+                        } else {
+                            $filter = new FiltersRadio();
+                            $filter->type = 'Radio';
+                        }
                         break;
                     case 'bool':
                         $filter = new FiltersBool();
@@ -159,6 +176,17 @@ class ParsingData extends ActiveRecord {
                         break;
                     default:
                         $filter = new Filters();
+                        if (mb_strpos($firstValue,'-')!=false || mb_strpos($firstValue,'–')!=false) {
+                            $filter->type = 'RangeIn';
+                        } else if (isset($filterParam['values'])) {
+                            $filter->type = 'Multy';
+                        } else {
+                            if ($values === true) {
+                                $filter->type = 'Bool';
+                            } else {
+                                $filter->type = 'Radio';
+                            }
+                        }
                 }
 
                 $filter->key = $filterParam['id'];
@@ -166,8 +194,7 @@ class ParsingData extends ActiveRecord {
             }
             $result[$filterParam['id']] = array(
                 'filter' => $filter,
-                'value' => isset($filterParam['value']) ?
-                        $filterParam['value'] : $filterParam['values']
+                'value' => $values
             );
         }
         return $result;

@@ -57,8 +57,8 @@ class ParsingController extends Controller {
                 continue;
             }
             $parsing = new ParsingData();
-            $parsing->x = $geometry['coordinates'][0];
-            $parsing->y = $geometry['coordinates'][1];
+            $parsing->x = $geometry['coordinates'][1];
+            $parsing->y = $geometry['coordinates'][0];
             $parsing->address = $metadata['address'];
             $parsing->status = 'obtained';
             $categories = array();

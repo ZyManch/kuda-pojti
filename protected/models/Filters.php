@@ -55,7 +55,7 @@ class Filters extends ActiveRecord
 			array('category_id, position', 'numerical', 'integerOnly'=>true),
 			array('title', 'length', 'max'=>128),
 			array('type', 'length', 'max'=>8),
-			array('key', 'length', 'max'=>12),
+			array('key', 'length', 'max'=>20),
 			array('king', 'length', 'max'=>7),
 			array('params, help', 'safe'),
 			// The following rule is used by search().

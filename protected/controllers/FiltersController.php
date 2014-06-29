@@ -30,8 +30,45 @@ class FiltersController extends Controller
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
-	public function actionCreate($id = null, $title = null, $key = null, $back = null) {
-		$model=new Filters;
+	public function actionCreate($id = null, $title = null, $key = null, $back = null, $type = null, $value = null) {
+        if ($type) {
+            if ($value) {
+                $values = explode(';',$value);
+                switch ($type) {
+                    case 'Multy':
+                        $model=new FiltersMulty();
+                        foreach ($values as $value) {
+                            $model->params .= $value.'='.$value."\n";
+                        }
+                        break;
+                    case 'Radio':
+                        $model=new FiltersRadio();
+                        foreach ($values as $value) {
+                            $model->params .= $value.'='.$value."\n";
+                        }
+                        break;
+                    case 'RangeIn':
+                        $model=new FiltersRangeOut();
+                        if (strpos($value,'-')) {
+                            $value = explode('-',$value);
+                        } else if (strpos($value,'–')) {
+                            $value = explode('–',$value);
+                        }
+                        $model->params = "0\n".intval(trim($value[1]))."\nВыбрано %d";
+                        break;
+                    case 'Bool':
+                        $model=new FiltersBool();
+                        break;
+                    default:
+                        $model=new Filters;
+                }
+            } else {
+                $model=new Filters;
+            }
+            $model->type = $type;
+        } else {
+            $model=new Filters;
+        }
         if ($title) {
             $model->title = $title;
             $model->king = 'type';
@@ -40,6 +77,7 @@ class FiltersController extends Controller
             $model->key = $key;
             $model->king = 'lower';
         }
+
         $this->model = 'Categories';
         if ($id) {
             $categories = $this->loadModel($id);
@@ -52,6 +90,13 @@ class FiltersController extends Controller
         $attributes = $this->_getFilterParam($model);
         if ($attributes) {
             $model->attributes=$attributes;
+            if (!$model->position && $model->category_id) {
+                $lastFilter = Filters::model()->find(array(
+                    'order' => 'position DESC',
+                    'condition' => 'category_id='.$model->category_id
+                ));
+                $model->position = $lastFilter ? $lastFilter->position + 1 : 1;
+            }
 			if($model->save()) {
                 if ($back) {
                     $this->redirect(str_replace('_','/', $back));
@@ -122,15 +167,16 @@ class FiltersController extends Controller
 		));
 	}
 
-    protected function _getFilterParam($model) {
+    protected function _getFilterParam(Filters $model) {
         $modelClass = get_class($model);
         if (!isset($_POST[$modelClass]) || !is_array($_POST[$modelClass])) {
             return false;
         }
         $attributes = $_POST[$modelClass];
         $type = $attributes['type'];
-        $params = $attributes['params'][$type];
-        switch ($type) {
+        $formats = $model->getFormatsOfParam();
+        $params = $attributes['params'][$formats[$type]];
+        switch ($formats[$type]) {
             case 'range':
                 $attributes['params'] = implode("\n", array($params[0],$params[1],$params[2]));
                 break;
